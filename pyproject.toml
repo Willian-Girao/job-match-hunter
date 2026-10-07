@@ -1,0 +1,20 @@
+[project]
+name = "job-match-hunter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Willian-Girao", email = "williansoaresgirao@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "python-dotenv>=1.2.4",
+    "supabase>=2.32.0",
+]
+
+[project.scripts]
+job-match-hunter = "job_match_hunter:main"
+
+[build-system]
+requires = ["uv_build>=0.12.23,<0.13.0"]
+build-backend = "uv_build"
