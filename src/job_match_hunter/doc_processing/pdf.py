@@ -1,8 +1,9 @@
 import pymupdf
+from pathlib import Path
 
-def pdf_to_text(pdf_path: str) -> str:
+def pdf_to_text(pdf_path: Path) -> str:
     """
-    pdf_path (str): complete path to the PDF file.
+    pdf_path (Path): complete path to the PDF file.
 
     text (str): string containing the content of the PDF file.
     """
