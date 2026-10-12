@@ -2,6 +2,8 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
+from job_match_hunter.doc_processing import pdf_to_text
+
 # makes the variables in .env accessible.
 load_dotenv()
 
@@ -19,3 +21,9 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+
+# PDF to text
+
+cv_as_txt = pdf_to_text(pdf_path='C://Github//job-match-hunter//data//job_hunter_dummy_cv.pdf')
+
+print(cv_as_txt)
