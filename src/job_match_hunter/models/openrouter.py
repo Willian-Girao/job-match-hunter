@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import json
 
-from job_match_hunter.doc_processing import pdf_to_text
+from job_match_hunter.ingestion import pdf_to_text
 
 # makes the variables in .env accessible.
 load_dotenv()
@@ -41,8 +41,6 @@ CV:
     }
 ]
 
-# TODO - not every model/provider endpoint supports structured outputs!
-# TODO - https://openrouter.ai/docs/guides/features/structured-outputs#best-practices
 response = client.chat.completions.create(
     model="openai/gpt-5.4",
     messages=messages,

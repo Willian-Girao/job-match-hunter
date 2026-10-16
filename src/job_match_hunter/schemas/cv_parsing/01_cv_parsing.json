@@ -1,0 +1,43 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "structured_cv_information",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "technical_skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "professional_experience": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "technical_skills",
+        "professional_experience",
+        "education",
+        "languages"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

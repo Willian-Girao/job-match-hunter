@@ -12,7 +12,7 @@ def pdf_to_text(pdf_path: Path) -> str:
     text = ''
 
     for page in pdf:
-        text += page.get_text()
+        text += page.get_text().strip()
 
     if not text.strip():
         raise ValueError("No text could be extracted from the PDF.")

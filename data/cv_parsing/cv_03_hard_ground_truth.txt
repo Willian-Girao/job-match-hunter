@@ -1,0 +1,47 @@
+GROUND TRUTH - CV #3 (HARD)
+
+[Technical Skills]
+- Python
+- C++
+- PyTorch
+- JAX
+- Docker
+- Kubernetes
+- Terraform
+- GitHub Actions
+- Google Cloud Platform (GCP)
+- Google Kubernetes Engine (GKE)
+- BigQuery
+- Kafka
+- Apache Spark
+- PostgreSQL
+- Airflow
+
+[Professional Experience]
+- Staff ML Platform Engineer, Aster Robotics, Prague / hybrid | Aug 2023 - Present
+  - Owns a training platform used by perception teams.
+  - Works with Python services on Kubernetes and Docker image builds.
+  - Uses Terraform and GitHub Actions for infrastructure changes.
+  - Migrated GPU training jobs to GKE.
+  - Introduced experiment metadata storage in PostgreSQL.
+  - Scheduled data-preparation workflows with Airflow.
+  - Supports researchers using PyTorch and supported a JAX-based prototype.
+- ML Engineer / Data Engineer, Mercury Forecasting | Jan 2020 - Jul 2023
+  - Built demand-forecasting models in PyTorch.
+  - Maintained Python/C++ feature-generation components for low-latency scoring.
+  - Processed event streams with Kafka and Spark.
+  - Used BigQuery for training datasets and PostgreSQL for operational state.
+  - Containerized services and helped adopt Kubernetes for scheduled inference.
+- Doctoral Researcher, Charles University | 2015 - 2019
+  - Developed simulation and optimization code in Python and C++.
+  - Used PyTorch for differentiable surrogate models.
+  - Research was part of the PhD in Computational Physics.
+
+[Education]
+- PhD, Computational Physics, Charles University | 2015 - 2019
+- MSc, Applied Mathematics, Czech Technical University | 2013 - 2015
+
+[Languages]
+- Czech | Native
+- English | C1 / Fluent
+- German | B1 / Intermediate
