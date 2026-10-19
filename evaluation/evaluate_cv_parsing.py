@@ -4,13 +4,14 @@ from dotenv import load_dotenv
 from pathlib import Path
 import json
 import time
+from job_match_hunter.data_layer.database import supabase
 
 from job_match_hunter.ingestion import pdf_to_text
 
 load_dotenv()
 
 # TODO - the hardcoded paths should be an env variable.
-
+# TODO - understing using OpenAI Python client for all models (not just from them).
 client = OpenAI(
     base_url='https://openrouter.ai/api/v1',
     api_key=os.environ['OPENROUTER_API_KEY']
@@ -44,8 +45,8 @@ for model_name in models:
     # b. loop over prompts for CV parsing
     for prompt in cv_prompt_files:
         # c. loop over JSON schemas
-        for jschema in cv_schema_files:
-            with open(os.path.join(cv_schema_path, jschema), encoding="utf-8") as f:
+        for json_schema in cv_schema_files:
+            with open(os.path.join(cv_schema_path, json_schema), encoding="utf-8") as f:
                 response_format = json.load(f)
 
             # d. loop over test samples
@@ -118,7 +119,9 @@ for model_name in models:
                         print("- ", v)
                     print("\n")
 
-                # TODO - log into Supabase
+                # TODO
+                # - input field to get mannual annotation
+
                 print('---------- meta data ----------\n')
                 print('sample: ', cv)
                 print('ground-truth: ', cv_gts_list[idx])
@@ -126,4 +129,25 @@ for model_name in models:
                 print('cost: ', cost)
                 print('total_tokens: ', total_tokens)
 
-                input('\n> finished parsing CV...')
+                score = input('\n> score (between 0 and 1): ')
+
+                if float(score) < 0 or float(score) > 1:
+                    score = input('\n> score must be between 0 and 1: ')
+
+                run_data = {
+                    "model": model_name,
+                    "prompt": prompt,
+                    "json_schema": json_schema,
+                    "input": cv,
+                    "ground_truth": cv_gts_list[idx],
+                    "error": error,
+                    "latency": latency,
+                    "cost": cost,
+                    "total_tokens": total_tokens,
+                    "score": float(score)
+                }
+
+                try:
+                    supabase.table("model_runs").insert(run_data).execute()
+                except Exception as e:
+                    print(f"{type(e).__name__}: {e}")
