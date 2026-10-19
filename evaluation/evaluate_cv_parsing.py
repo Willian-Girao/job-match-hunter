@@ -119,13 +119,11 @@ for model_name in models:
                         print("- ", v)
                     print("\n")
 
-                # TODO
-                # - input field to get mannual annotation
-
                 print('---------- meta data ----------\n')
                 print('sample: ', cv)
                 print('ground-truth: ', cv_gts_list[idx])
                 print('latency: ', latency, ' (s)')
+                print('error: ', error)
                 print('cost: ', cost)
                 print('total_tokens: ', total_tokens)
 
