@@ -113,6 +113,7 @@ for model_name in models:
                 except Exception as e:
                     error = f"{type(e).__name__}: {e}"
 
+                # TODO - model output should be sent to .txt for better annotation.
                 print('---------- model output ----------\n')
                 for key, val in json_response.items():
                     print(key, ": ")
