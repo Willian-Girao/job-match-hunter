@@ -1,7 +1,7 @@
 You extract structured information from curricula vitae (CV).
 The extracted structured information should be organized into the following categories:
 
-#### categories ####
+####
 Technical Skills
 Work Experience
 Education

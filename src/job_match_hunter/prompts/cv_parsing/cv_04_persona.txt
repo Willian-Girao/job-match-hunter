@@ -4,7 +4,7 @@ You extract relevant information from the CV in a structured and succinct manner
 You know that information discovered inside, say, the "Education" section can be relevant to other categories such as "Work Experience" or "Technical Skills".
 The extracted information should be organized into the following categories:
 
-#### categories ####
+####
 Technical Skills
 Work Experience
 Education

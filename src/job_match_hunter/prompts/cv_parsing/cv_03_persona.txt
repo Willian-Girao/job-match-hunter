@@ -3,7 +3,7 @@ You extract information from the CV in a way that facilitates matching the appli
 You extract relevant information from the CV in a structured and succinct manner.
 The extracted information should be organized into the following categories:
 
-#### categories ####
+####
 Technical Skills
 Professional Experience
 Education

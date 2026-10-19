@@ -84,6 +84,7 @@ for model_name in models:
                         model=model_name,
                         messages=messages,
                         max_tokens=1000, # TODO - need to figure out what to do with this argument.
+                        temperature=0.0, # https://openrouter.ai/docs/api_reference/parameters#temperature
                         extra_body={
                             "provider": {
                                 "require_parameters": True, # make sure only routes to models supporting structured outputs
