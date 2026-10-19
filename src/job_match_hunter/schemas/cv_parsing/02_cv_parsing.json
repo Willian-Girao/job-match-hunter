@@ -1,0 +1,47 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "structured_cv_information",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "technical_skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tools, technologies, equipments, softwares, code libraries, code packages, programming languages, algorithms, frameworks, methodologies, fields of science, and such"
+        },
+        "work_experience": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Total duration in years, job role, and relevant technical skills"
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Total duration in years, level of education (e.g. Course, Bachelor, Master, PhD), field of study, and relevant technical skills"
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Langagues spoken and their respective level of fluency"
+        }
+      },
+      "required": [
+        "technical_skills",
+        "work_experience",
+        "education",
+        "languages"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

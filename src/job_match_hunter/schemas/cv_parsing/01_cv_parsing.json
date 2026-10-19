@@ -12,7 +12,7 @@
             "type": "string"
           }
         },
-        "professional_experience": {
+        "work_experience": {
           "type": "array",
           "items": {
             "type": "string"
@@ -33,7 +33,7 @@
       },
       "required": [
         "technical_skills",
-        "professional_experience",
+        "work_experience",
         "education",
         "languages"
       ],
