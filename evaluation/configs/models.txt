@@ -1,1 +1,15 @@
-openai/gpt-5.4
+xingchen-agi/xing4.0-29b-a4b:free
+nvidia/nemotron-3.5-super-vl:free
+nvidia/nemotron-3-super-120b-a12b:free
+mistralai/mistral-nemo
+deepseek/deepseek-v4-flash
+openai/gpt-oss-20b
+deepseek/deepseek-v4-flash-0731
+openai/gpt-oss-20b:batch
+deepseek/deepseek-v4.1-flash
+nvidia/nemotron-3.5-lightning
+openai/gpt-oss-120b:batch
+google/gemma-3-4b-it
+sao10k/l3-lunaris-8b
+inference-net/schematron-v2-turbo
+openai/gpt-oss-120b

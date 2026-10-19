@@ -122,12 +122,15 @@ for model_name in models:
                     print("\n")
 
                 print('---------- meta data ----------\n')
-                print('sample: ', cv)
-                print('ground-truth: ', cv_gts_list[idx])
-                print('latency: ', latency, ' (s)')
-                print('error: ', error)
-                print('cost: ', cost)
-                print('total_tokens: ', total_tokens)
+                print("model: ", model_name)
+                print("prompt: ", prompt)
+                print("json_schema: ", json_schema)
+                print("input: ", cv)
+                print("ground_truth: ", cv_gts_list[idx])
+                print("error: ", error)
+                print("latency: ", latency, '(s)')
+                print("cost: ", cost)
+                print("total_tokens: ", total_tokens)
 
                 score = input('\n> score (between 0 and 1): ')
 
