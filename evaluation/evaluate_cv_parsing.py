@@ -5,6 +5,7 @@ from pathlib import Path
 import json
 import time
 from job_match_hunter.data_layer.database import supabase
+from job_match_hunter.output_processing import from_cv_json_response
 
 from job_match_hunter.ingestion import pdf_to_text
 
@@ -40,12 +41,18 @@ cv_schema_files = [file for file in os.listdir(cv_schema_path) if file.endswith(
 with open(Path('evaluation/configs/models.txt')) as f:
     models = [line.rstrip('\n') for line in f]
 
-# a. loop over models
-for model_name in models:
-    # b. loop over prompts for CV parsing
-    for prompt in cv_prompt_files:
-        # c. loop over JSON schemas
-        for json_schema in cv_schema_files:
+counter = 0 
+# a. loop over prompts for CV parsing
+for prompt in cv_prompt_files:
+    # b. loop over JSON schemas
+    for json_schema in cv_schema_files:
+        # c. loop over models
+        for model_name in models:
+            # TODO - need better validation for dir name creating
+            # dir holds the formatted model's outputs
+            dir_name = model_name.replace('/', '_').replace(':', '.')
+            os.makedirs(Path(f'evaluation/model_runs/{dir_name}'), exist_ok=True)
+
             with open(os.path.join(cv_schema_path, json_schema), encoding="utf-8") as f:
                 response_format = json.load(f)
 
@@ -101,25 +108,33 @@ for model_name in models:
 
                     json_response = json.loads(response.choices[0].message.content)
 
-                except OpenAI.APIStatusError as e:
-                    error = f"HTTP {e.status_code}: {e}"
+                # TODO - AttributeError: type object 'OpenAI' has no attribute 'APIStatusError'
+                # except OpenAI.APIStatusError as e:
+                #     error = f"HTTP {e.status_code}: {e}"
 
-                except OpenAI.APIConnectionError as e:
-                    error = f"Connection error: {e}"
+                # TODO - AttributeError: type object 'OpenAI' has no attribute 'APIConnectionError'
+                # except OpenAI.APIConnectionError as e:
+                #     error = f"Connection error: {e}"
 
-                except OpenAI.APIError as e:
-                    error = f"API error: {e}"
+                # TODO - AttributeError: type object 'OpenAI' has no attribute 'APIError'
+                # except OpenAI.APIError as e:
+                #     error = f"API error: {e}"
 
                 except Exception as e:
                     error = f"{type(e).__name__}: {e}"
+                    print(f'skipping model: {model_name}')
+                    # TODO - log error
+                    continue
 
-                # TODO - model output should be sent to .txt for better annotation.
+                # TODO
+                # [ ] Export formatted output to model dir as .txt
+                # [ ] Export evaluation metrics to model dir as .txt
                 print('---------- model output ----------\n')
-                for key, val in json_response.items():
-                    print(key, ": ")
-                    for v in val:
-                        print("- ", v)
-                    print("\n")
+                response_as_txt = from_cv_json_response(
+                    json_response=json_response,
+                    schema_name=response_format['json_schema']['name']
+                )
+                print(response_as_txt)
 
                 print('---------- meta data ----------\n')
                 print("model: ", model_name)
@@ -132,11 +147,6 @@ for model_name in models:
                 print("cost: ", cost)
                 print("total_tokens: ", total_tokens)
 
-                score = input('\n> score (between 0 and 1): ')
-
-                if float(score) < 0 or float(score) > 1:
-                    score = input('\n> score must be between 0 and 1: ')
-
                 run_data = {
                     "model": model_name,
                     "prompt": prompt,
@@ -147,7 +157,7 @@ for model_name in models:
                     "latency": latency,
                     "cost": cost,
                     "total_tokens": total_tokens,
-                    "score": float(score)
+                    "score": None
                 }
 
                 try:
