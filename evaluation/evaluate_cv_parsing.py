@@ -61,9 +61,10 @@ for idx_p, prompt in enumerate(cv_prompt_files):
                     .eq("input", cv)
                     .execute()
                 )
-
+                
                 if not len(response.data):
-                    print(f'> running `{model_name}` with `{prompt}`, `{json_schema}`, and `{cv}`.')
+                    # Running experiment.
+                    print(f'> running - `{model_name}` | `{prompt}` | `{json_schema}` | `{cv}`')
 
                     cv_txt = pdf_to_text(pdf_path=Path(f'data/cv_parsing/{cv}'))
                     prompt_txt = Path(os.path.join(cv_prompt_path, prompt)).read_text()
@@ -140,10 +141,14 @@ for idx_p, prompt in enumerate(cv_prompt_files):
                         "prompt_tokens": prompt_tokens,
                         "completion_tokens": completion_tokens,
                         "score": None,
-                        "finish_reason": finish_reason
+                        "finish_reason": finish_reason,
+                        "experiment_type": "CV parsing"
                     }
 
                     try:
                         supabase_backend.table("model_runs").insert(run_data).execute()
                     except Exception as e:
                         print(f"{type(e).__name__}: {e}")
+
+                else:
+                    print(f'> skipping - `{model_name}` | `{prompt}` | `{json_schema}` | `{cv}`')
