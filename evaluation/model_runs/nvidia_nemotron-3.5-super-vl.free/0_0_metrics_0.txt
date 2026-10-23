@@ -1,9 +1,0 @@
-model: nvidia/nemotron-3.5-super-vl:free
-prompt: cv_01_persona.txt
-json_schema: 01_cv_parsing.json
-input: cv_01_easy.pdf
-ground_truth: cv_01_easy_ground_truth.txt
-error: None
-latency: 9.8737686999998 (s)
-cost: 0
-total_tokens: 1324

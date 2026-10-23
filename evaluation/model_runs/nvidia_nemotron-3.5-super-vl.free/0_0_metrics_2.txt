@@ -1,9 +1,0 @@
-model: nvidia/nemotron-3.5-super-vl:free
-prompt: cv_01_persona.txt
-json_schema: 01_cv_parsing.json
-input: cv_03_hard.pdf
-ground_truth: cv_03_hard_ground_truth.txt
-error: JSONDecodeError: Unterminated string starting at: line 1 column 229 (char 228)
-latency: 35.90773380000019 (s)
-cost: 0
-total_tokens: 1559

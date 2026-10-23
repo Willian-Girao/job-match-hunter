@@ -1,9 +1,0 @@
-model: nvidia/nemotron-3.5-super-vl:free
-prompt: cv_01_persona.txt
-json_schema: 01_cv_parsing.json
-input: cv_02_medium.pdf
-ground_truth: cv_02_medium_ground_truth.txt
-error: TypeError: the JSON object must be str, bytes or bytearray, not NoneType
-latency: 20.3474984999998 (s)
-cost: 0
-total_tokens: 1480

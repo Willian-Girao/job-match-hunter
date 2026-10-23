@@ -1,5 +1,6 @@
 # Custom
 .env
+evaluation/model_runs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

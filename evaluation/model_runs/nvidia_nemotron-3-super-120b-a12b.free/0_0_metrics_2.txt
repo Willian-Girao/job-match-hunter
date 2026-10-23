@@ -1,9 +1,0 @@
-model: nvidia/nemotron-3-super-120b-a12b:free
-prompt: cv_01_persona.txt
-json_schema: 01_cv_parsing.json
-input: cv_03_hard.pdf
-ground_truth: cv_03_hard_ground_truth.txt
-error: NotFoundError: Error code: 404 - {'error': {'message': 'Provider returned error', 'code': 404, 'metadata': {'raw': '{"status":404,"title":"Not Found","detail":"Function \'ac74040f-9fc9-4c5e-ac74-279ba5161d69\': Not found for account \'sxpm0VR-knE2_K2__i14ZbzmXEludXpJbFGRvrvc08w\'"}', 'provider_name': 'Nvidia', 'is_byok': False}}, 'user_id': 'user_3KPrryPBQKlkZNOeAohKoy4JhUt'}
-latency: None (s)
-cost: None
-total_tokens: None
