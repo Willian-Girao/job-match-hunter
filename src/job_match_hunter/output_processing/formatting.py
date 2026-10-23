@@ -17,19 +17,19 @@ def from_cv_json_response(json_response, schema_name) -> str:
         try:
             output_as_txt += 'Technical Skills:\n\n'
             for ts in technical_skills:
-                output_as_txt += f'{ts.strip()}\n'
+                output_as_txt += f'{ts.strip().replace("\uFFFD", "")}\n'
 
             output_as_txt += '\nWork Experience:\n\n'
             for we in work_experience:
-                output_as_txt += f'{we.strip()}\n'
+                output_as_txt += f'{we.strip().replace("\uFFFD", "")}\n'
 
             output_as_txt += '\nEducation:\n\n'
             for ed in education:
-                output_as_txt += f'{ed.strip()}\n'
+                output_as_txt += f'{ed.strip().replace("\uFFFD", "")}\n'
 
             output_as_txt += '\nLanguages:\n\n'
             for lg in languages:
-                output_as_txt += f'{lg.strip()}\n'
+                output_as_txt += f'{lg.strip().replace("\uFFFD", "")}\n'
         except Exception as e:
             raise ValueError(f"{type(e).__name__}: {e}")
 
@@ -51,15 +51,15 @@ def from_cv_json_response(json_response, schema_name) -> str:
             # Work Experience
             output_as_txt += '\nWork Experience:\n\n'
             for we in work_experience:
-                output_as_txt += 'duration: ' + we['years'].strip() + ' years\n'
-                output_as_txt += 'role: ' + we['role'].strip() + '\n\n'
+                output_as_txt += 'duration: ' + we['years'].strip().replace("\uFFFD", "") + ' years\n'
+                output_as_txt += 'role: ' + we['role'].strip().replace("\uFFFD", "") + '\n\n'
 
             # Education
             output_as_txt += '\nEducation:\n\n'
             for ed in education:
-                output_as_txt += 'duration: ' + ed['years'].strip() + ' years\n'
-                output_as_txt += 'level: ' + ed['level'].strip() + '\n'
-                output_as_txt += 'field: ' + ed['field'].strip() + '\n\n'
+                output_as_txt += 'duration: ' + ed['years'].strip().replace("\uFFFD", "") + ' years\n'
+                output_as_txt += 'level: ' + ed['level'].strip().replace("\uFFFD", "") + '\n'
+                output_as_txt += 'field: ' + ed['field'].strip().replace("\uFFFD", "") + '\n\n'
 
             # Languages
             output_as_txt += '\nLanguages:\n\n'

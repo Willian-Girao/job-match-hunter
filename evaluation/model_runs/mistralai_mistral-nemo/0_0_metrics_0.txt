@@ -1,0 +1,9 @@
+model: mistralai/mistral-nemo
+prompt: cv_01_persona.txt
+json_schema: 01_cv_parsing.json
+input: cv_01_easy.pdf
+ground_truth: cv_01_easy_ground_truth.txt
+error: None
+latency: 4.813539000000219 (s)
+cost: 1.773e-05
+total_tokens: 591

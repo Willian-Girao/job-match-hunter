@@ -41,11 +41,10 @@ cv_schema_files = [file for file in os.listdir(cv_schema_path) if file.endswith(
 with open(Path('evaluation/configs/models.txt')) as f:
     models = [line.rstrip('\n') for line in f]
 
-counter = 0 
 # a. loop over prompts for CV parsing
-for prompt in cv_prompt_files:
+for idx_p, prompt in enumerate(cv_prompt_files):
     # b. loop over JSON schemas
-    for json_schema in cv_schema_files:
+    for idx_j, json_schema in enumerate(cv_schema_files):
         # c. loop over models
         for model_name in models:
             # TODO - need better validation for dir name creating
@@ -108,59 +107,51 @@ for prompt in cv_prompt_files:
 
                     json_response = json.loads(response.choices[0].message.content)
 
-                # TODO - AttributeError: type object 'OpenAI' has no attribute 'APIStatusError'
-                # except OpenAI.APIStatusError as e:
-                #     error = f"HTTP {e.status_code}: {e}"
-
-                # TODO - AttributeError: type object 'OpenAI' has no attribute 'APIConnectionError'
-                # except OpenAI.APIConnectionError as e:
-                #     error = f"Connection error: {e}"
-
-                # TODO - AttributeError: type object 'OpenAI' has no attribute 'APIError'
-                # except OpenAI.APIError as e:
-                #     error = f"API error: {e}"
+                    response_as_txt = from_cv_json_response(
+                        json_response=json_response,
+                        schema_name=response_format['json_schema']['name']
+                    )
 
                 except Exception as e:
                     error = f"{type(e).__name__}: {e}"
+                    response_as_txt = ""
                     print(f'skipping model: {model_name}')
                     # TODO - log error
-                    continue
 
-                # TODO
-                # [ ] Export formatted output to model dir as .txt
-                # [ ] Export evaluation metrics to model dir as .txt
-                print('---------- model output ----------\n')
-                response_as_txt = from_cv_json_response(
-                    json_response=json_response,
-                    schema_name=response_format['json_schema']['name']
-                )
-                print(response_as_txt)
+                # Saving model's response to file.
+                f_name = f'{idx_p}_{idx_j}_response_{idx}.txt'
+                f = open(Path(f'evaluation/model_runs/{dir_name}/{f_name}'), "w", encoding="utf-8")
+                f.write(response_as_txt)
+                f.close()
 
-                print('---------- meta data ----------\n')
-                print("model: ", model_name)
-                print("prompt: ", prompt)
-                print("json_schema: ", json_schema)
-                print("input: ", cv)
-                print("ground_truth: ", cv_gts_list[idx])
-                print("error: ", error)
-                print("latency: ", latency, '(s)')
-                print("cost: ", cost)
-                print("total_tokens: ", total_tokens)
+                # Saving comparison metrics to file.
+                f_name = f'{idx_p}_{idx_j}_metrics_{idx}.txt'
+                f = open(Path(f'evaluation/model_runs/{dir_name}/{f_name}'), "w", encoding="utf-8")
+                f.write("model: " + str(model_name) + '\n')
+                f.write("prompt: " + str(prompt) + '\n')
+                f.write("json_schema: " + str(json_schema) + '\n')
+                f.write("input: " + str(cv) + '\n')
+                f.write("ground_truth: " + str(cv_gts_list[idx]) + '\n')
+                f.write("error: " + str(error) + '\n')
+                f.write("latency: " + str(latency) + ' (s)' + '\n')
+                f.write("cost: " + str(cost) + '\n')
+                f.write("total_tokens: " + str(total_tokens) + '\n')
+                f.close()
 
-                run_data = {
-                    "model": model_name,
-                    "prompt": prompt,
-                    "json_schema": json_schema,
-                    "input": cv,
-                    "ground_truth": cv_gts_list[idx],
-                    "error": error,
-                    "latency": latency,
-                    "cost": cost,
-                    "total_tokens": total_tokens,
-                    "score": None
-                }
+                # run_data = {
+                #     "model": model_name,
+                #     "prompt": prompt,
+                #     "json_schema": json_schema,
+                #     "input": cv,
+                #     "ground_truth": cv_gts_list[idx],
+                #     "error": error,
+                #     "latency": latency,
+                #     "cost": cost,
+                #     "total_tokens": total_tokens,
+                #     "score": None
+                # }
 
-                try:
-                    supabase.table("model_runs").insert(run_data).execute()
-                except Exception as e:
-                    print(f"{type(e).__name__}: {e}")
+                # try:
+                #     supabase.table("model_runs").insert(run_data).execute()
+                # except Exception as e:
+                #     print(f"{type(e).__name__}: {e}")
