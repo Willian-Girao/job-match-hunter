@@ -13,7 +13,7 @@ def from_cv_json_response(json_response, schema_name) -> str:
 
     output_as_txt = ''
 
-    if schema_name in ['cv_data_01', 'cv_data_02']:
+    if schema_name in ['01_cv_parsing.json', '02_cv_parsing.json']:
         try:
             output_as_txt += 'Technical Skills:\n\n'
             for ts in technical_skills:
@@ -33,7 +33,7 @@ def from_cv_json_response(json_response, schema_name) -> str:
         except Exception as e:
             raise ValueError(f"{type(e).__name__}: {e}")
 
-    elif schema_name in ['cv_data_03']:
+    elif schema_name in ['03_cv_parsing.json']:
         try:
             # Technical Skills
             output_as_txt += 'Technical Skills:\n\n'
