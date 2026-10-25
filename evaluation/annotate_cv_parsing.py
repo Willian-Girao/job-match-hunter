@@ -12,7 +12,7 @@ load_dotenv()
 
 response = (
     supabase_backend.table("model_runs")
-    .select("id, input, output, ground_truth, json_schema")
+    .select("id, input, output, ground_truth, json_schema, prompt")
     .lte("latency", 5)
     .is_("error", "null")
     .is_("score", "null")
@@ -28,12 +28,19 @@ client = OpenAI(
     api_key=os.environ['OPENROUTER_API_KEY']
 )
 
+with open(Path('src/job_match_hunter/schemas/annotator/annotator.json'), encoding="utf-8") as f:
+    annotator_schema = json.load(f)
+
 for row in rows:
     row_id = row['id']
     input_f = row['input']
     output = row['output']
     json_schema = row['json_schema']
+    prompt = row['prompt']
     ground_truth = row['ground_truth']
+
+    with open(Path(f'data/cv_parsing/{ground_truth}'), "r", encoding="utf-8") as f:
+        ground_truth_txt = f.read()
 
     output_as_txt = from_cv_json_response(output, json_schema)
 
@@ -41,8 +48,8 @@ for row in rows:
         {
             "role": "system",
             "content": """
-    You are comparing the OUTPUT of a LLM against a GROUD TRUTH.
-    Compare the OUTPUT against the GROUD TRUTH element-by-element, account for semantic 
+    You are comparing the <OUTPUT> of a LLM against a <GROUD TRUTH>.
+    Compare the <GROUD TRUTH> against the <OUTPUT> element-by-element, account for semantic 
     equivalence rather than exact wording, and return a score from 0–100.
     The content to be compared is grouped under [Technical Skills], [Professional Experience],
     [Education], and [Languages].
@@ -51,19 +58,19 @@ for row in rows:
         {
             "role": "user",
             "content": f"""
-    Compare the OUTPUT against the GROUD TRUTH.
+    Compare the <GROUD TRUTH> against the <OUTPUT>.
 
-    OUTPUT:
+    <GROUD TRUTH>:
+    {ground_truth_txt}
+
+    <OUTPUT>:
     {output_as_txt}
-
-    GROUD TRUTH:
-    {...}
     """
         }
     ]
 
     response = client.chat.completions.create(
-        model="openai/gpt-5.6-sol",
+        model="openai/gpt-4.1-nano",
         messages=messages,
         temperature=0.0,
         extra_body={
@@ -71,13 +78,24 @@ for row in rows:
                 "require_parameters": True, # make sure only routes to models supporting structured outputs
             }
         },
-        response_format=...
+        response_format=annotator_schema
     )
 
-    # subprocess.Popen([
-    #     "notepad.exe",
-    #     Path(f'data/cv_parsing/{ground_truth}')
-    # ])
+    annotator_json_response = json.loads(response.choices[0].message.content)
+
+    subprocess.Popen([
+        "notepad.exe",
+        Path(f'data/cv_parsing/{ground_truth}')
+    ])
+
+    print('###################################')
+    print(output_as_txt)
+    print('###################################')
+    print(json_schema)
+    print(prompt)
+    print(annotator_json_response)
+
+    input('> paused...')
 
     # response = (
     #     supabase_backend

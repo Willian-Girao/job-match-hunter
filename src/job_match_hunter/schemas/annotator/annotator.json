@@ -1,0 +1,20 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "annotator",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "description": "Match between OUTPUT and GROUD TRUTH as a percentage."
+        }
+      },
+      "required": [
+        "score"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
