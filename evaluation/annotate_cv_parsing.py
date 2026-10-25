@@ -1,3 +1,4 @@
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -22,6 +23,11 @@ response = (
 
 rows = response.data
 
+client = OpenAI(
+    base_url='https://openrouter.ai/api/v1',
+    api_key=os.environ['OPENROUTER_API_KEY']
+)
+
 for row in rows:
     row_id = row['id']
     input_f = row['input']
@@ -31,10 +37,42 @@ for row in rows:
 
     output_as_txt = from_cv_json_response(output, json_schema)
 
-    print(f'#################### {json_schema} ###########################')
-    print(output_as_txt)
-    print('###############################################')
-    input('...')
+    messages = [
+        {
+            "role": "system",
+            "content": """
+    You are comparing the OUTPUT of a LLM against a GROUD TRUTH.
+    Compare the OUTPUT against the GROUD TRUTH element-by-element, account for semantic 
+    equivalence rather than exact wording, and return a score from 0–100.
+    The content to be compared is grouped under [Technical Skills], [Professional Experience],
+    [Education], and [Languages].
+    """
+        },
+        {
+            "role": "user",
+            "content": f"""
+    Compare the OUTPUT against the GROUD TRUTH.
+
+    OUTPUT:
+    {output_as_txt}
+
+    GROUD TRUTH:
+    {...}
+    """
+        }
+    ]
+
+    response = client.chat.completions.create(
+        model="openai/gpt-5.6-sol",
+        messages=messages,
+        temperature=0.0,
+        extra_body={
+            "provider": {
+                "require_parameters": True, # make sure only routes to models supporting structured outputs
+            }
+        },
+        response_format=...
+    )
 
     # subprocess.Popen([
     #     "notepad.exe",
