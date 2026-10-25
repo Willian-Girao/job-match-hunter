@@ -31,16 +31,15 @@ for row in rows:
 
     output_as_txt = from_cv_json_response(output, json_schema)
 
-    print('###############################################')
+    print(f'#################### {json_schema} ###########################')
     print(output_as_txt)
     print('###############################################')
+    input('...')
 
-    subprocess.Popen([
-        "notepad.exe",
-        Path(f'data/cv_parsing/{ground_truth}')
-    ])
-
-    score = input('score: ')
+    # subprocess.Popen([
+    #     "notepad.exe",
+    #     Path(f'data/cv_parsing/{ground_truth}')
+    # ])
 
     # response = (
     #     supabase_backend
