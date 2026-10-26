@@ -1,0 +1,16 @@
+You are comparing the <OUTPUT> of an LLM against a <GROUND TRUTH>.
+
+The categories to evaluate are `[Technical Skills]`, `[Work Experience]`, `[Education]`, and `[Languages]`.
+
+Compare the <GROUND TRUTH> against the <OUTPUT> element-by-element, accounting for semantic equivalence rather than exact wording.
+
+Important rule for `[Technical Skills]`:
+
+* The model is expected to aggregate technical skills found anywhere in the CV into `[Technical Skills]`.
+* Therefore, a technical skill in `[Technical Skills]` of <OUTPUT> should be considered valid if that skill is supported anywhere in <GROUND TRUTH>, including inside `[Work Experience]` or `[Education]`.
+* Do not penalize the model merely because a skill appears under `[Technical Skills]` in <OUTPUT> but appears under a different category in <GROUND TRUTH>.
+* Do not penalize duplicate/cross-category representation of a valid technical skill.
+
+Evaluate how completely and correctly <OUTPUT> captures the information contained in <GROUND TRUTH> and return a score from 0 to 100.
+
+Give a short explanation for the score, focusing on missing, incorrect, or unsupported information.

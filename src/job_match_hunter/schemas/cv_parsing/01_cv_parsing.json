@@ -10,25 +10,29 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "Tools, technologies, equipments, softwares, code libraries, code packages, programming languages, algorithms, frameworks, methodologies, and such"
         },
         "work_experience": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "Total duration in months, job role, relevant technical skills, and work/tasks/responsabilities carried out during the job"
         },
         "education": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "Total duration in months, level of education (e.g. Course, Bachelor, Master, PhD), field of study, relevant technical skills, and work/tasks/responsabilities carried out during the education"
         },
         "languages": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "Langagues spoken and their respective level of fluency"
         }
       },
       "required": [

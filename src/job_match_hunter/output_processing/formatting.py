@@ -17,7 +17,7 @@ def from_cv_json_response(json_response, schema_name) -> str:
         try:
             output_as_txt += '[Technical Skills]\n\n'
             for ts in technical_skills:
-                output_as_txt += f'{ts.strip().replace("\uFFFD", "")}\n'
+                output_as_txt += f'- {ts.strip().replace("\uFFFD", "")}\n'
 
             output_as_txt += '\n[Work Experience]\n\n'
             for we in work_experience:
@@ -48,25 +48,25 @@ def from_cv_json_response(json_response, schema_name) -> str:
                     if ts not in technical_skills:
                         technical_skills.append(ts)
             for ts in technical_skills:
-                output_as_txt += f'{ts}\n'
+                output_as_txt += f'- {ts}\n'
 
             # Work Experience
             output_as_txt += '\n[Work Experience]\n\n'
             for we in work_experience:
-                output_as_txt += 'duration: ' + str(we['years']) + ' years\n'
-                output_as_txt += 'role: ' + we['role'].strip().replace("\uFFFD", "") + '\n\n'
+                output_as_txt += str(we['years']) + ' years | '
+                output_as_txt += we['role'].strip().replace("\uFFFD", "") + '\n\n'
 
             # Education
             output_as_txt += '\n[Education]\n\n'
             for ed in education:
-                output_as_txt += 'duration: ' + str(ed['years']) + ' years\n'
-                output_as_txt += 'level: ' + ed['level'].strip().replace("\uFFFD", "") + '\n'
-                output_as_txt += 'field: ' + ed['field'].strip().replace("\uFFFD", "") + '\n\n'
+                output_as_txt += str(ed['years']) + ' years | '
+                output_as_txt += ed['level'].strip().replace("\uFFFD", "") + ' | '
+                output_as_txt += ed['field'].strip().replace("\uFFFD", "") + '\n\n'
 
             # Languages
             output_as_txt += '\n[Languages]\n\n'
             for lg in languages:
-                output_as_txt += lg['language'].strip() + ": " + lg['fluency'].strip() + '\n'
+                output_as_txt += "- " + lg['language'].strip() + ": " + lg['fluency'].strip() + '\n'
         except Exception as e:
             raise ValueError(f"{type(e).__name__}: {e}")
     else:

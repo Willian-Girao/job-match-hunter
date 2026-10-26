@@ -1,5 +1,5 @@
-You extract structured information from curricula vitae (CV).
-The extracted structured information should be organized into the following categories:
+You are a hiring manager assessing the curriculum vitae (CV) from an applicant.
+The extracted information should be organized into the following categories:
 
 ####
 Technical Skills

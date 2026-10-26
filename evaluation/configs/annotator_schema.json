@@ -9,10 +9,15 @@
         "score": {
           "type": "number",
           "description": "Match between OUTPUT and GROUD TRUTH as a percentage."
+        },
+        "reason": {
+          "type": "string",
+          "description": "What are the reasons for the score given."
         }
       },
       "required": [
-        "score"
+        "score",
+        "reason"
       ],
       "additionalProperties": false
     }

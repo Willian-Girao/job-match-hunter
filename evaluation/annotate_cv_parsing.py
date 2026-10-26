@@ -12,12 +12,16 @@ load_dotenv()
 
 response = (
     supabase_backend.table("model_runs")
-    .select("id, input, output, ground_truth, json_schema, prompt")
+    .select("id, input, output, ground_truth, json_schema, prompt, model")
     .lte("latency", 5)
     .is_("error", "null")
     .is_("score", "null")
     .eq("experiment_type", "CV parsing")
     .eq("finish_reason", "stop")
+    .eq("input", "cv_01_easy.pdf")
+    .eq("prompt", "cv_01_persona.txt")
+    .eq("json_schema", "03_cv_parsing.json")
+    .eq("model", "inference-net/schematron-v2-turbo")
     .execute()
 )
 
@@ -28,11 +32,15 @@ client = OpenAI(
     api_key=os.environ['OPENROUTER_API_KEY']
 )
 
-with open(Path('src/job_match_hunter/schemas/annotator/annotator.json'), encoding="utf-8") as f:
+with open(Path('evaluation/configs/annotator_schema.json'), encoding="utf-8") as f:
     annotator_schema = json.load(f)
+
+with open(Path('evaluation/configs/annotator_prompt.txt'), encoding="utf-8") as f:
+    annotator_prompt = f.read()
 
 for row in rows:
     row_id = row['id']
+    model = row['model']
     input_f = row['input']
     output = row['output']
     json_schema = row['json_schema']
@@ -47,12 +55,8 @@ for row in rows:
     messages = [
         {
             "role": "system",
-            "content": """
-    You are comparing the <OUTPUT> of a LLM against a <GROUD TRUTH>.
-    Compare the <GROUD TRUTH> against the <OUTPUT> element-by-element, account for semantic 
-    equivalence rather than exact wording, and return a score from 0–100.
-    The content to be compared is grouped under [Technical Skills], [Professional Experience],
-    [Education], and [Languages].
+            "content": f"""
+    {annotator_prompt}
     """
         },
         {
@@ -88,12 +92,15 @@ for row in rows:
         Path(f'data/cv_parsing/{ground_truth}')
     ])
 
-    print('###################################')
+    print('\n\n\n###################################')
     print(output_as_txt)
     print('###################################')
-    print(json_schema)
+    print(model)
+    print(input_f)
     print(prompt)
-    print(annotator_json_response)
+    print(json_schema)
+    print(annotator_json_response['score'])
+    print(annotator_json_response['reason'])
 
     input('> paused...')
 

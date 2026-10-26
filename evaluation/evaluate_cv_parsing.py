@@ -21,7 +21,7 @@ client = OpenAI(
 cv_files = [
     file for file in os.listdir(Path('data/cv_parsing/'))
     if file.endswith('.pdf')
-] # CVs as text
+]
 cv_gts_list = [file for file in os.listdir(Path('data/cv_parsing/')) if file.endswith('.txt')] # ground-truth
 
 # 2. Load prompts ----------

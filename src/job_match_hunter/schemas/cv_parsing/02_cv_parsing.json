@@ -11,28 +11,93 @@
           "items": {
             "type": "string"
           },
-          "description": "Tools, technologies, equipments, softwares, code libraries, code packages, programming languages, algorithms, frameworks, methodologies, fields of science, and such"
+          "description": "Tools, technologies, equipments, softwares, code libraries, code packages, programming languages, algorithms, frameworks, methodologies, and such"
         },
         "work_experience": {
           "type": "array",
           "items": {
-            "type": "string"
-          },
-          "description": "Total duration in years, job role, and relevant technical skills"
+            "type": "object",
+            "properties": {
+              "months": {
+                "type": "number",
+                "description": "Total duration in months"
+              },
+              "role": {
+                "type": "string",
+                "description": "Job role"
+              },
+              "technical_skills": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Technical elements (e.g. technologies, frameworks, tools) involved in the job role"
+                }
+              },
+              "work_carried_out": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Work/tasks/responsabilities carried out during the job"
+                }
+              }
+            },
+            "required": ["months", "role", "technical_skills", "work_carried_out"],
+            "additionalProperties": false
+          }
         },
         "education": {
           "type": "array",
           "items": {
-            "type": "string"
-          },
-          "description": "Total duration in years, level of education (e.g. Course, Bachelor, Master, PhD), field of study, and relevant technical skills"
+            "type": "object",
+            "properties": {
+              "months": {
+                "type": "number",
+                "description": "Total duration in months"
+              },
+              "level": {
+                "type": "string",
+                "description": "Level of education (e.g. Course, Bachelor, Master, PhD)"
+              },
+              "field": {
+                "type": "string",
+                "description": "Field of study"
+              },
+              "technical_skills": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Technical elements (e.g. technologies, frameworks, tools) involved in the education"
+                }
+              },
+              "work_carried_out": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Work/tasks/responsabilities carried out during the education"
+                }
+              }
+            },
+            "required": ["months", "level", "field", "technical_skills", "work_carried_out"],
+            "additionalProperties": false
+          }
         },
         "languages": {
           "type": "array",
           "items": {
-            "type": "string"
-          },
-          "description": "Langagues spoken and their respective level of fluency"
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "description": "Langague spoken"
+              },
+              "fluency": {
+                "type": "string",
+                "description": "Level of langague fluency"
+              }
+            },
+            "required": ["language", "fluency"],
+            "additionalProperties": false
+          }
         }
       },
       "required": [
