@@ -18,30 +18,30 @@
           "items": {
             "type": "object",
             "properties": {
-              "months": {
-                "type": "number",
-                "description": "Total duration of the job position measured in months."
+              "duration": {
+                "type": ["number", "null"],
+                "description": "Total duration of the work experience in months when stated or directly derivable from the CV; otherwise null."
               },
-              "role": {
-                "type": "string",
-                "description": "Job role."
+              "job_role": {
+                "type": ["string", "null"],
+                "description": "Jobe role during the work experience when stated; otherwise null."
               },
               "technical_skills": {
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "description": "Technical competencies in the job carried out."
+                  "description": "Technical skills demonstrated or used during the work experience."
                 }
               },
-              "work_carried_out": {
+              "activities": {
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "description": "Work/tasks/responsabilities in the job carried out."
+                  "description": "Responsibilities or tasks carried out in the work experience."
                 }
               }
             },
-            "required": ["months", "role", "technical_skills", "work_carried_out"],
+            "required": ["duration", "job_role", "technical_skills", "activities"],
             "additionalProperties": false
           }
         },
@@ -50,34 +50,34 @@
           "items": {
             "type": "object",
             "properties": {
-              "months": {
-                "type": "number",
-                "description": "Total duration of the education measured in months."
+              "duration": {
+                "type": ["number", "null"],
+                "description": "Total duration of the education in months when stated or directly derivable from the CV; otherwise null."
               },
-              "level": {
-                "type": "string",
-                "description": "Level of education (for example, course, bachelor, masters, or PhD)."
+              "education_type": {
+                "type": ["string", "null"],
+                "description": "Type of education when stated; otherwise null."
               },
               "field": {
-                "type": "string",
-                "description": "Field of study in the education."
+                "type": ["string", "null"],
+                "description": "Field of study or main topic of study in the education when stated; otherwise null."
               },
               "technical_skills": {
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "description": "Technical competencies carried out in the education."
+                  "description": "Technical skills demonstrated or used during the education."
                 }
               },
-              "work_carried_out": {
+              "activities": {
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "description": "Work/tasks/responsabilities in the education carried out."
+                  "description": "Responsibilities, tasks, research, or work carried out in the education."
                 }
               }
             },
-            "required": ["months", "level", "field", "technical_skills", "work_carried_out"],
+            "required": ["duration", "education_type", "field", "technical_skills", "activities"],
             "additionalProperties": false
           }
         },
@@ -91,8 +91,8 @@
                 "description": "Langague spoken."
               },
               "fluency": {
-                "type": "string",
-                "description": "Level of fluency in langague."
+                "type": ["string", "null"],
+                "description": "Stated level of language fluency; null if not provided."
               }
             },
             "required": ["language", "fluency"],
