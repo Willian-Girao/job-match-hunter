@@ -120,9 +120,9 @@ for idx_p, prompt in enumerate(cv_prompt_files):
                         cost = response.usage.cost
                         prompt_tokens = response.usage.prompt_tokens
                         completion_tokens = response.usage.completion_tokens
+                        finish_reason = response.choices[0].finish_reason
 
                         json_response = json.loads(response.choices[0].message.content)
-                        finish_reason = response.choices[0].finish_reason
 
                     except Exception as e:
                         error = f"{type(e).__name__}: {e}"
