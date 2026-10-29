@@ -1,5 +1,5 @@
 
-def from_cv_json_response(json_response, schema_name) -> str:
+def from_cv_json_response(json_response) -> str:
     """
     TODO - type hints
     """
@@ -13,63 +13,46 @@ def from_cv_json_response(json_response, schema_name) -> str:
 
     output_as_txt = ''
 
-    if schema_name in ['01_cv_parsing.json', '02_cv_parsing.json']:
-        try:
-            output_as_txt += '[Technical Skills]\n\n'
-            for ts in technical_skills:
-                output_as_txt += f'- {ts.strip().replace("\uFFFD", "")}\n'
+    try:
+        # Technical Skills
+        output_as_txt += '[Technical Skills]\n\n'
+        # tech skills found within "work experience" category
+        for we in work_experience:
+            for ts in we['technical_skills']:
+                if ts not in technical_skills:
+                    technical_skills.append(ts)
+        # tech skills found within "education" category
+        for ed in education:
+            for ts in ed['technical_skills']:
+                if ts not in technical_skills:
+                    technical_skills.append(ts)
+        for ts in technical_skills:
+            output_as_txt += f'- {ts}\n'
 
-            output_as_txt += '\n[Work Experience]\n\n'
-            for we in work_experience:
-                output_as_txt += f'{we.strip().replace("\uFFFD", "")}\n\n'
+        # Work Experience
+        output_as_txt += '\n[Work Experience]\n'
+        for we in work_experience:
+            output_as_txt += '\n' + str(we['duration']) + ' months | '
+            output_as_txt += we['job_role'].strip().replace("\uFFFD", "") + '\n\n'
 
-            output_as_txt += '\n[Education]\n\n'
-            for ed in education:
-                output_as_txt += f'{ed.strip().replace("\uFFFD", "")}\n\n'
+            for activity in we['activities']:
+                output_as_txt += f'- {activity.strip().replace("\uFFFD", "")}\n'
 
-            output_as_txt += '\n[Languages]\n\n'
-            for lg in languages:
-                output_as_txt += f'{lg.strip().replace("\uFFFD", "")}\n'
-        except Exception as e:
-            raise ValueError(f"{type(e).__name__}: {e}")
+        # Education
+        output_as_txt += '\n[Education]\n'
+        for ed in education:
+            output_as_txt += '\n' + str(ed['duration']) + ' months | '
+            output_as_txt += ed['education_type'].strip().replace("\uFFFD", "") + ' | '
+            output_as_txt += ed['field'].strip().replace("\uFFFD", "") + '\n\n'
 
-    elif schema_name in ['03_cv_parsing.json']:
-        try:
-            # Technical Skills
-            output_as_txt += '[Technical Skills]\n\n'
-            # tech skills found within "work experience" category
-            for we in work_experience:
-                for ts in we['technical_skills']:
-                    if ts not in technical_skills:
-                        technical_skills.append(ts)
-            # tech skills found within "education" category
-            for ed in education:
-                for ts in ed['technical_skills']:
-                    if ts not in technical_skills:
-                        technical_skills.append(ts)
-            for ts in technical_skills:
-                output_as_txt += f'- {ts}\n'
+            for activity in ed['activities']:
+                output_as_txt += f'- {activity.strip().replace("\uFFFD", "")}\n'
 
-            # Work Experience
-            output_as_txt += '\n[Work Experience]\n\n'
-            for we in work_experience:
-                output_as_txt += str(we['years']) + ' years | '
-                output_as_txt += we['role'].strip().replace("\uFFFD", "") + '\n\n'
-
-            # Education
-            output_as_txt += '\n[Education]\n\n'
-            for ed in education:
-                output_as_txt += str(ed['years']) + ' years | '
-                output_as_txt += ed['level'].strip().replace("\uFFFD", "") + ' | '
-                output_as_txt += ed['field'].strip().replace("\uFFFD", "") + '\n\n'
-
-            # Languages
-            output_as_txt += '\n[Languages]\n\n'
-            for lg in languages:
-                output_as_txt += "- " + lg['language'].strip() + ": " + lg['fluency'].strip() + '\n'
-        except Exception as e:
-            raise ValueError(f"{type(e).__name__}: {e}")
-    else:
-        raise ValueError(f'Argument `schema_name` with value {schema_name} is not valid.')
+        # Languages
+        output_as_txt += '\n[Languages]\n\n'
+        for lg in languages:
+            output_as_txt += "- " + lg['language'].strip() + ": " + lg['fluency'].strip() + '\n'
+    except Exception as e:
+        raise ValueError(f"{type(e).__name__}: {e}")
 
     return output_as_txt

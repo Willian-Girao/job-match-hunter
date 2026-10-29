@@ -9,7 +9,7 @@ load_dotenv()
 response = (
     supabase_backend.table("model_runs")
     .select("id, model, prompt, json_schema, input")
-    .lte("latency", 20)
+    .lte("latency", 10)
     .is_("error", "null")
     .is_("score", "null")
     .eq("experiment_type", "CV parsing")
@@ -57,6 +57,6 @@ valid_rows = [
     if runs == expected
 ]
 
-print(len(valid_rows))
+print(f'Valid models: {len(valid_rows)}')
 for row in valid_rows:
     print(row[0])

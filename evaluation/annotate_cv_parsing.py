@@ -7,21 +7,79 @@ from job_match_hunter.data_layer.database import supabase_backend
 from job_match_hunter.ingestion import pdf_to_text
 from job_match_hunter.output_processing import from_cv_json_response
 import subprocess
+from collections import defaultdict
 
 load_dotenv()
 
+MAX_LATENCY = 5
+
+# =================================================================================
+
 response = (
     supabase_backend.table("model_runs")
-    .select("id, input, output, ground_truth, json_schema, prompt, model")
-    .lte("latency", 5)
+    .select("id, model, prompt, json_schema, input")
+    .lte("latency", MAX_LATENCY)
     .is_("error", "null")
     .is_("score", "null")
     .eq("experiment_type", "CV parsing")
     .eq("finish_reason", "stop")
-    .eq("input", "cv_01_easy.pdf")
-    .eq("prompt", "cv_01_persona.txt")
-    .eq("json_schema", "03_cv_parsing.json")
-    .eq("model", "inference-net/schematron-v2-turbo")
+    .execute()
+)
+
+rows = response.data
+valid_rows = []
+
+# 1. Load test dataset ----------
+
+cv_files = [
+    file for file in os.listdir(Path('data/cv_parsing/'))
+    if file.endswith('.pdf')
+]
+
+# 2. Load prompts ----------
+
+cv_prompt_path = Path('src/job_match_hunter/prompts/cv_parsing/')
+cv_prompt_files = [file for file in os.listdir(cv_prompt_path) if file.endswith('.txt')]
+
+# 3. Load schemas ----------
+
+cv_schema_path = Path('src/job_match_hunter/schemas/cv_parsing/')
+cv_schema_files = [file for file in os.listdir(cv_schema_path) if file.endswith('.json')]
+
+expected = {
+    (prompt, schema, cv)
+    for prompt in cv_prompt_files
+    for schema in cv_schema_files
+    for cv in cv_files
+}   
+
+model_runs = defaultdict(set)
+
+for row in rows:
+    model_runs[row["model"]].add(
+        (row["prompt"], row["json_schema"], row["input"])
+    )
+
+valid_rows = [
+    (model, runs)
+    for model, runs in model_runs.items()
+    if runs == expected
+]
+
+valid_models = [row[0] for row in valid_rows]
+print(f'Valid models: {valid_models}')
+
+# =================================================================================
+
+response = (
+    supabase_backend.table("model_runs")
+    .select("id, input, output, ground_truth, json_schema, prompt, json_schema, model")
+    .lte("latency", MAX_LATENCY)
+    .is_("error", "null")
+    .is_("score", "null")
+    .eq("experiment_type", "CV parsing")
+    .eq("finish_reason", "stop")
+    .in_("model", valid_models)
     .execute()
 )
 
@@ -50,7 +108,7 @@ for row in rows:
     with open(Path(f'data/cv_parsing/{ground_truth}'), "r", encoding="utf-8") as f:
         ground_truth_txt = f.read()
 
-    output_as_txt = from_cv_json_response(output, json_schema)
+    output_as_txt = from_cv_json_response(output)
 
     messages = [
         {
@@ -74,9 +132,8 @@ for row in rows:
     ]
 
     response = client.chat.completions.create(
-        model="openai/gpt-4.1-nano",
+        model="openai/gpt-5.6-sol",
         messages=messages,
-        temperature=0.0,
         extra_body={
             "provider": {
                 "require_parameters": True, # make sure only routes to models supporting structured outputs
@@ -92,22 +149,45 @@ for row in rows:
         Path(f'data/cv_parsing/{ground_truth}')
     ])
 
-    print('\n\n\n###################################')
+    print('\n\n#######################################################################################')
     print(output_as_txt)
-    print('###################################')
-    print(model)
-    print(input_f)
-    print(prompt)
-    print(json_schema)
-    print(annotator_json_response['score'])
-    print(annotator_json_response['reason'])
+    print('#######################################################################################')
+    print('model: ', model)
+    print('input: ', input_f)
+    print('prompt: ', prompt)
+    print('score: ', annotator_json_response['score'])
+    print('reason: ', annotator_json_response['reason'])
 
-    input('> paused...')
+    accept_ann = input('\n> accept annotation (y/n)? ')
 
-    # response = (
-    #     supabase_backend
-    #     .table("model_runs")
-    #     .update({"score": float(score)})
-    #     .eq("id", row_id)
-    #     .execute()
-    # )
+    if accept_ann == 'y':
+
+        response = (
+            supabase_backend
+            .table("model_runs")
+            .update({
+                "score": float(annotator_json_response['score']),
+                "score_reason": annotator_json_response['reason']
+            })
+            .eq("id", row_id)
+            .execute()
+        )
+
+    else:
+
+        score = float(input('\n> enter score (0-100): '))
+
+        response = (
+            supabase_backend
+            .table("model_runs")
+            .update({
+                "score": score,
+                "score_reason": annotator_json_response["reason"],
+            })
+            .eq("id", row_id)
+            .execute()
+        )
+
+    input('...')
+
+    print('', end='\r', flush=True)
