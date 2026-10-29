@@ -20,7 +20,6 @@ response = (
     .select("id, model, prompt, json_schema, input")
     .lte("latency", MAX_LATENCY)
     .is_("error", "null")
-    .is_("score", "null")
     .eq("experiment_type", "CV parsing")
     .eq("finish_reason", "stop")
     .execute()
@@ -144,50 +143,28 @@ for row in rows:
 
     annotator_json_response = json.loads(response.choices[0].message.content)
 
-    subprocess.Popen([
-        "notepad.exe",
-        Path(f'data/cv_parsing/{ground_truth}')
-    ])
+    # subprocess.Popen([
+    #     "notepad.exe",
+    #     Path(f'data/cv_parsing/{ground_truth}')
+    # ])
 
-    print('\n\n#######################################################################################')
-    print(output_as_txt)
-    print('#######################################################################################')
-    print('model: ', model)
+    # print('\n\n#######################################################################################')
+    # print(output_as_txt)
+    # print('#######################################################################################')
+
+    response = (
+        supabase_backend
+        .table("model_runs")
+        .update({
+            "score": float(annotator_json_response['score']),
+            "score_reason": annotator_json_response['reason']
+        })
+        .eq("id", row_id)
+        .execute()
+    )
+
+    print('\n\nmodel: ', model)
     print('input: ', input_f)
     print('prompt: ', prompt)
     print('score: ', annotator_json_response['score'])
     print('reason: ', annotator_json_response['reason'])
-
-    accept_ann = input('\n> accept annotation (y/n)? ')
-
-    if accept_ann == 'y':
-
-        response = (
-            supabase_backend
-            .table("model_runs")
-            .update({
-                "score": float(annotator_json_response['score']),
-                "score_reason": annotator_json_response['reason']
-            })
-            .eq("id", row_id)
-            .execute()
-        )
-
-    else:
-
-        score = float(input('\n> enter score (0-100): '))
-
-        response = (
-            supabase_backend
-            .table("model_runs")
-            .update({
-                "score": score,
-                "score_reason": annotator_json_response["reason"],
-            })
-            .eq("id", row_id)
-            .execute()
-        )
-
-    input('...')
-
-    print('', end='\r', flush=True)

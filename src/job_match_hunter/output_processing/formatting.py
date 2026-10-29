@@ -30,7 +30,7 @@ def from_cv_json_response(json_response) -> str:
             output_as_txt += f'- {ts}\n'
 
         # Work Experience
-        output_as_txt += '\n[Work Experience]\n'
+        output_as_txt += '\n[Professional Experience]\n'
         for we in work_experience:
             output_as_txt += '\n' + str(we['duration']) + ' months | '
             output_as_txt += we['job_role'].strip().replace("\uFFFD", "") + '\n\n'

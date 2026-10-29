@@ -4,6 +4,15 @@ The categories to evaluate are `[Technical Skills]`, `[Work Experience]`, `[Educ
 
 Compare the <GROUND TRUTH> against the <OUTPUT> element-by-element, accounting for semantic equivalence rather than exact wording.
 
+Starting from a score of 100, use these rules to deduct points:
+
+* -15 for information that is not supported anywhere in <GROUND TRUTH>.
+* -10 for missing entries under [Professional Experience].
+* -10 for missing entries under [Education].
+* -5 for missing entries under [Technical Skills].
+* -5 for missing entries under [Languages].
+* -2.5 for missing descriptions under a [Professional Experience] or [Education] entries.
+
 Important rule for `[Technical Skills]`:
 
 * The model is expected to aggregate technical skills found anywhere in the CV into `[Technical Skills]`.
@@ -13,4 +22,8 @@ Important rule for `[Technical Skills]`:
 
 Evaluate how completely and correctly <OUTPUT> captures the information contained in <GROUND TRUTH> and return a score from 0 to 100.
 
-Give a short explanation for the score, focusing on missing, incorrect, or unsupported information.
+Do not penalize omitions of names of employers, companies nor educational institutions.
+
+Do not penalize `None months`.
+
+Give a short explanation for the score, listing missing and incorrect or unsupported/fabricated information.
