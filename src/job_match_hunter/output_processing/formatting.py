@@ -32,21 +32,23 @@ def from_cv_json_response(json_response) -> str:
         # Work Experience
         output_as_txt += '\n[Professional Experience]\n'
         for we in work_experience:
-            output_as_txt += '\n' + str(we['duration']) + ' months | '
-            output_as_txt += we['job_role'].strip().replace("\uFFFD", "") + '\n\n'
+            if we['job_role'] or we['activities']:
+                output_as_txt += ('\n' + str(we['duration']) + ' months | ') if we['duration'] else '\nunknown months | '
+                output_as_txt += str(we['job_role']).strip().replace("\uFFFD", "") + '\n\n'
 
-            for activity in we['activities']:
-                output_as_txt += f'- {activity.strip().replace("\uFFFD", "")}\n'
+                for activity in we['activities']:
+                    output_as_txt += f'- {activity.strip().replace("\uFFFD", "")}\n'
 
         # Education
         output_as_txt += '\n[Education]\n'
         for ed in education:
-            output_as_txt += '\n' + str(ed['duration']) + ' months | '
-            output_as_txt += ed['education_type'].strip().replace("\uFFFD", "") + ' | '
-            output_as_txt += ed['field'].strip().replace("\uFFFD", "") + '\n\n'
+            if ed['education_type'] or ed['activities']:
+                output_as_txt += ('\n' + str(ed['duration']) + ' months | ') if ed['duration'] else '\nunknown months | '
+                output_as_txt += str(ed['education_type']).strip().replace("\uFFFD", "") + ' | '
+                output_as_txt += str(ed['field']).strip().replace("\uFFFD", "") + '\n\n'
 
-            for activity in ed['activities']:
-                output_as_txt += f'- {activity.strip().replace("\uFFFD", "")}\n'
+                for activity in ed['activities']:
+                    output_as_txt += f'- {activity.strip().replace("\uFFFD", "")}\n'
 
         # Languages
         output_as_txt += '\n[Languages]\n\n'
