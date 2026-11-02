@@ -4,9 +4,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import json
 from job_match_hunter.data_layer.database import supabase_backend
-from job_match_hunter.ingestion import pdf_to_text
 from job_match_hunter.output_processing import from_cv_json_response
-import subprocess
 from collections import defaultdict
 
 load_dotenv()
@@ -142,15 +140,6 @@ for row in rows:
     )
 
     annotator_json_response = json.loads(response.choices[0].message.content)
-
-    # subprocess.Popen([
-    #     "notepad.exe",
-    #     Path(f'data/cv_parsing/{ground_truth}')
-    # ])
-
-    # print('\n\n#######################################################################################')
-    # print(output_as_txt)
-    # print('#######################################################################################')
 
     response = (
         supabase_backend

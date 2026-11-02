@@ -11,7 +11,10 @@ Starting from a score of 100, use these rules to deduct points:
 * -10 for missing entries under [Education].
 * -5 for missing entries under [Technical Skills].
 * -5 for missing entries under [Languages].
+* -5 for time durations that are wrong by more than 1 month.
 * -2.5 for missing descriptions under a [Professional Experience] or [Education] entries.
+* -1.5 for simplified descriptions, under a [Professional Experience] or [Education] entries, that omits important context or tools.
+* -1.5 for duplicated entries under [Technical Skills].
 
 Important rule for `[Technical Skills]`:
 
