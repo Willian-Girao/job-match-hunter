@@ -29,8 +29,6 @@ Python appears both under Technical Requirements and Work Experience because it 
 
 PyTorch appears under Technical Requirements and Soft Requirements because it is a technical competency that is preferred rather than mandatory.
 
-Do not place the same requirement in both Hard Requirements and Soft Requirements.
-
 Do not infer qualifications, technical competencies, durations, skills, hard requirements, soft requirements, or language proficiency that are not supported by the JD.
 
 Keep the extracted information succinct.

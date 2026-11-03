@@ -13,8 +13,6 @@ Organize the extracted information into:
 
 The same information may appear in more than one category when appropriate. However, the same requirement must not appear in both Hard Requirements and Soft Requirements.
 
-The same information may not appear both in Hard Requirements and in Soft Requirements.
-
 Do not add entries to Hard Requirements or Soft Requirements that are not explicitly supported by the JD.
 
 Do not infer qualifications, technical competencies, durations, skills, hard requirements, soft requirements, or language proficiency that are not supported by the JD.
