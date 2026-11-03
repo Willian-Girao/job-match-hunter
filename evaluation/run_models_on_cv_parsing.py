@@ -36,7 +36,7 @@ cv_schema_files = [file for file in os.listdir(cv_schema_path) if file.endswith(
 
 # 4. Test models ----------
 
-with open(Path('evaluation/configs/models.txt')) as f:
+with open(Path('evaluation/configs/models_v2.txt')) as f:
     models = [line.rstrip('\n') for line in f]
 
 # a. loop over prompts for CV parsing
@@ -67,7 +67,7 @@ for idx_p, prompt in enumerate(cv_prompt_files):
                     print(f'> running - `{model_name}` | `{prompt}` | `{json_schema}` | `{cv}`')
 
                     cv_txt = pdf_to_text(pdf_path=Path(f'data/cv_parsing/{cv}'))
-                    prompt_txt = Path(os.path.join(cv_prompt_path, prompt)).read_text()
+                    prompt_txt = Path(os.path.join(cv_prompt_path, prompt)).read_text(encoding="utf-8")
 
                     # e. extract structured data from CV
                     messages = [
