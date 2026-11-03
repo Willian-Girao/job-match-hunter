@@ -1,0 +1,110 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "jd_data_01",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "technical_skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Programming languages, libraries, frameworks, software, tools, methodologies, equipment, and other technical competencies."
+        },
+        "professional_experience": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "duration": {
+                "type": ["number", "null"],
+                "description": "Duration of the professional experience (in months), when stated; otherwise null."
+              },
+              "job_role": {
+                "type": ["string", "null"],
+                "description": "Job role requested in the professional experience, when stated; otherwise null."
+              },
+              "technical_skills": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Specific technical requirements involded in the professional experience, when stated; otherwise null. Examples include (but are not limited to) programming languages, frameworks, or tools."
+                }
+              },
+              "activities": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Activities or tasks requested as part of the professional experience, when stated; otherwise null."
+                }
+              }
+            },
+            "required": ["duration", "job_role", "technical_skills", "activities"],
+            "additionalProperties": false
+          }
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "education_type": {
+                "type": ["string", "null"],
+                "description": "Type of education, when stated; otherwise null."
+              },
+              "field": {
+                "type": ["string", "null"],
+                "description": "Field of study of the education, when stated; otherwise null."
+              }
+            },
+            "required": ["education_type", "field"],
+            "additionalProperties": false
+          }
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "description": "Langague requirements, when stated; otherwise null."
+              },
+              "fluency": {
+                "type": ["string", "null"],
+                "description": "Level of language fluency, when stated; otherwise null."
+              }
+            },
+            "required": ["language", "fluency"],
+            "additionalProperties": false
+          }
+        },
+        "hard_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Requirements described as mandatory, when state; otherwise null. Account for semantic meaning rather than relying only on explicit words such as 'mandatory'."
+        },
+        "soft_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Requirements described as optional, when state; otherwise null. Account for semantic meaning rather than relying only on explicit words such as 'optional'."
+        }
+      },
+      "required": [
+        "technical_skills",
+        "professional_experience",
+        "education",
+        "languages",
+        "hard_requirements",
+        "soft_requirements"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
