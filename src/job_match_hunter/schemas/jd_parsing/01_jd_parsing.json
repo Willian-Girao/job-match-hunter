@@ -37,7 +37,7 @@
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "description": "Activities or tasks requested as part of the professional experience, when stated; otherwise null."
+                  "description": "Activities or tasks carried out as part of the professional experience, when stated; otherwise null."
                 }
               }
             },
