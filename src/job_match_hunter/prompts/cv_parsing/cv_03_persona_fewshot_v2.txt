@@ -25,4 +25,13 @@ The role remains "PhD Researcher"; do not transform it into an unsupported job t
 
 Apply the same principle throughout the CV: reuse information across categories when semantically appropriate, but do not invent qualifications, roles, durations, skills, or language proficiency that are not supported by the CV.
 
-Keep the extracted information succinct.
+The rules for information extraction are:
+
+* Do not invent unsupported information.
+* Do not derive unsupported information.
+* Do not reinterpret existing information.
+* Maintain complete multi-word names instead of only acronyms.
+* Remove duplicated entries inside all categories.
+* Maintain information where they appear, even if they are included in different categories.
+* Time duration of type “<month> <year> - present” should interpret "present" as "<current month> <current calendar year>".
+* Summarize descriptions without compromising their content.
