@@ -9,7 +9,7 @@ from collections import defaultdict
 
 load_dotenv()
 
-MAX_LATENCY = 5
+MAX_LATENCY = 7
 
 # =================================================================================
 
@@ -60,7 +60,7 @@ for row in rows:
 valid_rows = [
     (model, runs)
     for model, runs in model_runs.items()
-    if runs == expected
+    if sorted(runs) == sorted(expected)
 ]
 
 valid_models = [row[0] for row in valid_rows]
@@ -70,10 +70,9 @@ print(f'Valid models: {valid_models}')
 
 response = (
     supabase_backend.table("model_runs")
-    .select("id, input, output, ground_truth, json_schema, prompt, json_schema, model")
+    .select("id, input, output, ground_truth, json_schema, prompt, json_schema, model, score")
     .lte("latency", MAX_LATENCY)
     .is_("error", "null")
-    .is_("score", "null")
     .eq("experiment_type", "CV parsing")
     .eq("finish_reason", "stop")
     .in_("model", valid_models)
@@ -102,58 +101,60 @@ for row in rows:
     prompt = row['prompt']
     ground_truth = row['ground_truth']
 
-    with open(Path(f'data/cv_parsing/{ground_truth}'), "r", encoding="utf-8") as f:
-        ground_truth_txt = f.read()
+    if row['score'] == None:
 
-    output_as_txt = from_cv_json_response(output)
+        with open(Path(f'data/cv_parsing/{ground_truth}'), "r", encoding="utf-8") as f:
+            ground_truth_txt = f.read()
 
-    messages = [
-        {
-            "role": "system",
-            "content": f"""
-    {annotator_prompt}
-    """
-        },
-        {
-            "role": "user",
-            "content": f"""
-    Compare the <GROUD TRUTH> against the <OUTPUT>.
+        output_as_txt = from_cv_json_response(output)
 
-    <GROUD TRUTH>:
-    {ground_truth_txt}
+        messages = [
+            {
+                "role": "system",
+                "content": f"""
+        {annotator_prompt}
+        """
+            },
+            {
+                "role": "user",
+                "content": f"""
+        Compare the <GROUD TRUTH> against the <OUTPUT>.
 
-    <OUTPUT>:
-    {output_as_txt}
-    """
-        }
-    ]
+        <GROUD TRUTH>:
+        {ground_truth_txt}
 
-    response = client.chat.completions.create(
-        model="openai/gpt-5.6-sol",
-        messages=messages,
-        extra_body={
-            "provider": {
-                "require_parameters": True, # make sure only routes to models supporting structured outputs
+        <OUTPUT>:
+        {output_as_txt}
+        """
             }
-        },
-        response_format=annotator_schema
-    )
+        ]
 
-    annotator_json_response = json.loads(response.choices[0].message.content)
+        response = client.chat.completions.create(
+            model="openai/gpt-5.6-sol",
+            messages=messages,
+            extra_body={
+                "provider": {
+                    "require_parameters": True, # make sure only routes to models supporting structured outputs
+                }
+            },
+            response_format=annotator_schema
+        )
 
-    response = (
-        supabase_backend
-        .table("model_runs")
-        .update({
-            "score": float(annotator_json_response['score']),
-            "score_reason": annotator_json_response['reason']
-        })
-        .eq("id", row_id)
-        .execute()
-    )
+        annotator_json_response = json.loads(response.choices[0].message.content)
 
-    print('\n\nmodel: ', model)
-    print('input: ', input_f)
-    print('prompt: ', prompt)
-    print('score: ', annotator_json_response['score'])
-    print('reason: ', annotator_json_response['reason'])
+        response = (
+            supabase_backend
+            .table("model_runs")
+            .update({
+                "score": float(annotator_json_response['score']),
+                "score_reason": annotator_json_response['reason']
+            })
+            .eq("id", row_id)
+            .execute()
+        )
+
+        print('\n\nmodel: ', model)
+        print('input: ', input_f)
+        print('prompt: ', prompt)
+        print('score: ', annotator_json_response['score'])
+        print('reason: ', annotator_json_response['reason'])

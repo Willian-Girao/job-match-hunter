@@ -8,3 +8,13 @@ deepseek/deepseek-v3.1-terminus
 reflection/beam-1.0-501b-a23b
 thedrummer/cydonia-24b-v4.1
 inception/mercury-2
+meta-llama/llama-3.1-8b-instruct'
+mistralai/codestral-2508
+bytedance-seed/seed-2.0-mini
+mistralai/mistral-saba
+thedrummer/unslopnemo-12b
+deepseek/deepseek-chat-v3.1
+qwen/qwen3-coder
+thedrummer/skyfall-36b-v2
+qwen/qwen3-vl-8b-instruct
+minimax/minimax-m3

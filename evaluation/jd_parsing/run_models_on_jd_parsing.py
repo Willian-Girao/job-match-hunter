@@ -14,27 +14,29 @@ client = OpenAI(
     api_key=os.environ['OPENROUTER_API_KEY']
 )
 
+project_root = Path(__file__).resolve().parents[2]
+
 # 1. Load test dataset ----------
 
 jd_files = [
-    file for file in os.listdir(Path('data/jd_parsing/'))
-    if file.endswith('.txt')
+    file for file in os.listdir(Path(f'{project_root}/data/jd_parsing/'))
+    if not file.endswith('_ground_truth.txt')
 ]
-jd_gts_list = [file for file in os.listdir(Path('data/jd_parsing/')) if file.endswith('.txt')] # ground-truth
+jd_gts_list = [file for file in os.listdir(Path(f'{project_root}/data/jd_parsing/')) if file.endswith('_ground_truth.txt')] # ground-truth
 
 # 2. Load prompts ----------
 
-jd_prompt_path = Path('src/job_match_hunter/prompts/jd_parsing/')
+jd_prompt_path = Path(f'{project_root}/src/job_match_hunter/prompts/jd_parsing/')
 jd_prompt_files = [file for file in os.listdir(jd_prompt_path) if file.endswith('.txt')]
 
 # 3. Load schemas ----------
 
-jd_schema_path = Path('src/job_match_hunter/schemas/jd_parsing/')
+jd_schema_path = Path(f'{project_root}/src/job_match_hunter/schemas/jd_parsing/')
 jd_schema_files = [file for file in os.listdir(jd_schema_path) if file.endswith('.json')]
 
 # 4. Test models ----------
 
-with open(Path('evaluation/configs/models.txt')) as f:
+with open(Path(f'{project_root}/evaluation/configs/models_best.txt')) as f:
     models = [line.rstrip('\n') for line in f]
 
 # a. loop over prompts for JD parsing
@@ -64,7 +66,7 @@ for idx_p, prompt in enumerate(jd_prompt_files):
                     # Running experiment.
                     print(f'> running - `{model_name}` | `{prompt}` | `{json_schema}` | `{jd}`')
 
-                    jd_txt = pdf_to_text(pdf_path=Path(f'data/jd_parsing/{jd}'))
+                    jd_txt = pdf_to_text(pdf_path=Path(f'{project_root}/data/jd_parsing/{jd}'))
                     prompt_txt = Path(os.path.join(jd_prompt_path, prompt)).read_text(encoding="utf-8")
 
                     # e. extract structured data from JD
