@@ -2,6 +2,8 @@ You are comparing the <OUTPUT> of an LLM (information extracted from a job descr
 
 The categories to evaluate are `[Technical Skills]`, `[Professional Experience]`, `[Education]`, and `[Languages]`.
 
+<OUTPUT> has categories `[Hard Requirements]` and `[Soft Requirements]` under which elements from <GROUND TRUTH> listed as `Mandatory` and `Optinal` are grouped, respectively.
+
 Compare the <GROUND TRUTH> against the <OUTPUT> element-by-element, accounting for semantic equivalence rather than exact wording.
 
 Starting from a score of 100, use these rules to deduct points:
