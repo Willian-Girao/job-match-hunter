@@ -36,7 +36,7 @@ jd_schema_files = [file for file in os.listdir(jd_schema_path) if file.endswith(
 
 # 4. Test models ----------
 
-with open(Path(f'{project_root}/evaluation/configs/models_best.txt')) as f:
+with open(Path(f'{project_root}/evaluation/configs/models_v1.txt')) as f:
     models = [line.rstrip('\n') for line in f]
 
 # a. loop over prompts for JD parsing
@@ -66,7 +66,7 @@ for idx_p, prompt in enumerate(jd_prompt_files):
                     # Running experiment.
                     print(f'> running - `{model_name}` | `{prompt}` | `{json_schema}` | `{jd}`')
 
-                    jd_txt = pdf_to_text(pdf_path=Path(f'{project_root}/data/jd_parsing/{jd}'))
+                    jd_txt = pdf_to_text(pdf_path=Path(f'{project_root}/data/jd_parsing/{jd}')) # TODO - JDs are already a .txt file
                     prompt_txt = Path(os.path.join(jd_prompt_path, prompt)).read_text(encoding="utf-8")
 
                     # e. extract structured data from JD
