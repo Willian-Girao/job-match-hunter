@@ -1,0 +1,32 @@
+You are comparing the <OUTPUT> of an LLM against a <GROUND TRUTH>.
+
+The categories to evaluate are `[Technical Skills]`, `[Work Experience]`, `[Education]`, and `[Languages]`.
+
+Compare the <GROUND TRUTH> against the <OUTPUT> element-by-element, accounting for semantic equivalence rather than exact wording.
+
+Starting from a score of 100, use these rules to deduct points:
+
+* -15 for information that is not supported anywhere in <GROUND TRUTH>.
+* -10 for missing entries under [Professional Experience].
+* -10 for missing entries under [Education].
+* -5 for missing entries under [Technical Skills].
+* -5 for missing entries under [Languages].
+* -5 for time durations that are wrong by more than 1 month.
+* -2.5 for missing descriptions under a [Professional Experience] or [Education] entries.
+* -1.5 for simplified descriptions, under a [Professional Experience] or [Education] entries, that omits important context or tools.
+* -1.5 for duplicated entries under [Technical Skills].
+
+Important rule for `[Technical Skills]`:
+
+* The model is expected to aggregate technical skills found anywhere in the CV into `[Technical Skills]`.
+* Therefore, a technical skill in `[Technical Skills]` of <OUTPUT> should be considered valid if that skill is supported anywhere in <GROUND TRUTH>, including inside `[Work Experience]` or `[Education]`.
+* Do not penalize the model merely because a skill appears under `[Technical Skills]` in <OUTPUT> but appears under a different category in <GROUND TRUTH>.
+* Do not penalize duplicate/cross-category representation of a valid technical skill.
+
+Evaluate how completely and correctly <OUTPUT> captures the information contained in <GROUND TRUTH> and return a score from 0 to 100.
+
+Do not penalize omitions of names of employers, companies nor educational institutions.
+
+Do not penalize `None months`.
+
+Give a short explanation for the score, listing missing and incorrect or unsupported/fabricated information.

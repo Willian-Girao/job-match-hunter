@@ -1,0 +1,112 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "cv_data_01",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "technical_skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Programming languages, libraries, frameworks, software, tools, methodologies, equipment, and other technical competencies."
+        },
+        "work_experience": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "duration": {
+                "type": ["number", "null"],
+                "description": "Total duration of the work experience in months when stated or directly derivable from the CV; otherwise null."
+              },
+              "job_role": {
+                "type": ["string", "null"],
+                "description": "Jobe role during the work experience when stated; otherwise null."
+              },
+              "technical_skills": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Technical skills demonstrated or used during the work experience."
+                }
+              },
+              "activities": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Responsibilities or tasks carried out in the work experience."
+                }
+              }
+            },
+            "required": ["duration", "job_role", "technical_skills", "activities"],
+            "additionalProperties": false
+          }
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "duration": {
+                "type": ["number", "null"],
+                "description": "Total duration of the education in months when stated or directly derivable from the CV; otherwise null."
+              },
+              "education_type": {
+                "type": ["string", "null"],
+                "description": "Type of education when stated; otherwise null."
+              },
+              "field": {
+                "type": ["string", "null"],
+                "description": "Field of study or main topic of study in the education when stated; otherwise null."
+              },
+              "technical_skills": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Technical skills demonstrated or used during the education."
+                }
+              },
+              "activities": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Responsibilities, tasks, research, or work carried out in the education."
+                }
+              }
+            },
+            "required": ["duration", "education_type", "field", "technical_skills", "activities"],
+            "additionalProperties": false
+          }
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "description": "Langague spoken."
+              },
+              "fluency": {
+                "type": ["string", "null"],
+                "description": "Stated level of language fluency; null if not provided."
+              }
+            },
+            "required": ["language", "fluency"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "technical_skills",
+        "work_experience",
+        "education",
+        "languages"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

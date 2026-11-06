@@ -1,0 +1,38 @@
+GROUND TRUTH - JD #3 (HARD)
+
+[Technical Skills]
+Mandatory:
+- Python | Production experience
+- Kubernetes | Production experience
+- Docker
+- Infrastructure as code: Terraform or equivalent
+- At least one major cloud platform: GCP, AWS, or Azure
+- GitHub Actions / CI-CD
+- PostgreSQL | Sufficient to diagnose data-flow / operational-metadata issues
+- Understanding of ML training loops and GPU workloads sufficient to troubleshoot platform issues
+Optional:
+- Kafka
+- Apache Spark
+- Ray
+- NVIDIA Triton
+- BigQuery experience specifically (the company uses it, but the JD does not state that direct BigQuery experience is required)
+
+[Professional Experience]
+Mandatory:
+- 5+ years in software engineering, ML engineering, data engineering, or a closely related production engineering role
+- At least 2 years supporting ML/AI workloads in production
+- Experience evolving or operating infrastructure for repeatable ML training / production-ready training jobs
+Optional:
+- Experience with distributed data or messaging systems
+
+[Education]
+Mandatory:
+- Bachelor's degree in Computer Science, Engineering, or a related technical field, OR equivalent practical experience
+Optional:
+- Master's degree
+
+[Languages]
+Mandatory:
+- English | Professional fluency
+Optional:
+- Dutch | Any demonstrated proficiency

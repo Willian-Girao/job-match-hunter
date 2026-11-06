@@ -1,0 +1,15 @@
+CV TEST CASES
+cv/cv_01_easy.pdf
+cv/cv_01_easy_ground_truth.txt
+cv/cv_02_medium.pdf
+cv/cv_02_medium_ground_truth.txt
+cv/cv_03_hard.pdf
+cv/cv_03_hard_ground_truth.txt
+
+JOB DESCRIPTION TEST CASES
+jd/jd_01_easy.txt
+jd/jd_01_easy_ground_truth.txt
+jd/jd_02_medium.txt
+jd/jd_02_medium_ground_truth.txt
+jd/jd_03_hard.txt
+jd/jd_03_hard_ground_truth.txt

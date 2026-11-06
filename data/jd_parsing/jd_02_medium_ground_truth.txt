@@ -1,0 +1,34 @@
+GROUND TRUTH - JD #2 (MEDIUM)
+
+[Technical Skills]
+Mandatory:
+- Python
+- PyTorch
+- Hugging Face Transformers
+- Transformer model training or fine-tuning for NLP
+- MLflow or comparable experiment-tracking experience
+- SQL
+- Docker
+Optional:
+- Google Cloud
+- FastAPI
+- Multilingual NLP experience
+
+[Professional Experience]
+Mandatory:
+- At least 3 years building machine-learning systems in an industry or applied-research setting
+- Experience owning or contributing to model experimentation from dataset design through evaluation / production hand-off
+Optional:
+- Prior multilingual NLP work
+
+[Education]
+Mandatory:
+- University degree in Computer Science, AI, Engineering, Mathematics, or another quantitative discipline, OR equivalent practical experience
+Optional:
+- Master's degree
+
+[Languages]
+Mandatory:
+- English | Professional working level
+Optional:
+- German | Any demonstrated proficiency

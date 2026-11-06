@@ -1,0 +1,22 @@
+🧠 Applied NLP Engineer - Luma Health Tech
+Berlin, Germany · Product & Engineering · Full-time
+
+Luma Health Tech helps hospitals route patient messages to the right care team. We are expanding the language intelligence group that powers classification, search, and summarization features used across our platform.
+
+The role
+You will own model experiments from dataset design through offline evaluation and production hand-off. Most of our current stack is Python, PyTorch and Hugging Face Transformers, and we expect you to be comfortable reading and modifying training code rather than only calling hosted APIs. You'll also work with SQL datasets and package services in Docker.
+
+What we think you'll bring
+• At least 3 years building machine-learning systems in an industry or applied-research setting.
+• Practical experience training or fine-tuning transformer models for NLP tasks.
+• Strong Python skills and working knowledge of PyTorch.
+• Experience with experiment tracking; we use MLflow today.
+• Ability to work with SQL-based datasets.
+• A university degree in computer science, AI, engineering, mathematics, or another quantitative discipline.
+• Our working language is English, so you should be comfortable collaborating at a professional level.
+
+A few things that would make your first months easier 🌱
+Experience deploying on Google Cloud is a plus. Familiarity with FastAPI would be useful but is not required. We would preferably like someone who has worked on multilingual NLP. German language skills are welcome, but not necessary. A master's degree is preferred; equivalent practical experience is absolutely fine.
+
+What you'll get
+💡 Dedicated research time, conference budget, and the chance to shape our model-evaluation practices.

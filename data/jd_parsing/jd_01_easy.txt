@@ -1,0 +1,28 @@
+🤖 Machine Learning Engineer - OrbitPay
+Amsterdam, Netherlands | Full-time | Hybrid
+
+About OrbitPay
+OrbitPay builds fraud-detection and payment-risk products for European merchants. Our ML team works closely with data engineering and product to deploy models that make real-time decisions.
+
+What you'll do
+- Train and evaluate machine-learning models for fraud detection.
+- Build Python services for batch and online inference.
+- Collaborate with data engineers on production datasets and monitoring.
+
+Required qualifications
+- 2+ years of professional experience in machine learning or data science.
+- Strong Python programming skills.
+- Hands-on experience with PyTorch.
+- Experience working with SQL.
+- Experience deploying services with Docker.
+- Bachelor's degree in Computer Science, Data Science, Engineering, or a related quantitative field.
+- Professional working proficiency in English.
+
+Nice to have ✨
+- Experience with AWS is a plus.
+- Knowledge of Kubernetes is a plus.
+- A Master's degree is preferable.
+- Dutch language skills are a plus.
+
+What we offer
+🌍 International team, flexible hybrid work, and a learning budget.

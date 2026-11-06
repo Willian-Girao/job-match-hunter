@@ -1,0 +1,62 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "cv_jd_match",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "description": "a value betweem 0 and 100."
+        },
+        "score_reason": {
+          "type": "string",
+          "description": "a short explanation for the score."
+        },
+        "opinion": {
+          "type": "string",
+          "description": "a short explanation of why the CV owner should or should not apply for the JD."
+        },
+        "mandatory_elements": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "elements described as mandatory in the JD, if any; otherwise null."
+          }
+        },
+        "optional_elements": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "elements described as optional in the JD, if any; otherwise null."
+          }
+        },
+        "met_elements": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "elements found within the JD that are supported in the CV, if any; otherwise null."
+          }
+        },
+        "unmet_mandatory_elements": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "elements found within `mandatory_elements` that are not supported in the CV, if any; otherwise null."
+          }
+        }
+      },
+      "required": [
+        "score",
+        "score_reason",
+        "opinion",
+        "mandatory_elements",
+        "optional_elements",
+        "met_elements",
+        "unmet_mandatory_elements"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,31 @@
+GROUND TRUTH - JD #1 (EASY)
+
+[Technical Skills]
+Mandatory:
+- Python
+- PyTorch
+- SQL
+- Docker
+Optional:
+- AWS
+- Kubernetes
+
+[Professional Experience]
+Mandatory:
+- 2+ years of professional experience in machine learning or data science
+- Experience training/evaluating machine-learning models for fraud detection or closely related ML work
+- Experience building Python services for batch and/or online inference
+Optional:
+- None explicitly required beyond the optional technical items above
+
+[Education]
+Mandatory:
+- Bachelor's degree in Computer Science, Data Science, Engineering, or a related quantitative field
+Optional:
+- Master's degree
+
+[Languages]
+Mandatory:
+- English | Professional working proficiency
+Optional:
+- Dutch | Any demonstrated proficiency

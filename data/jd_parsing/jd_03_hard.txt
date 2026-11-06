@@ -1,0 +1,19 @@
+🚀 Senior AI Platform Engineer - Beacon Robotics
+Eindhoven / remote within the EU | Full-time
+
+We build autonomy software for warehouse robots, but this opening is not a research-scientist role. The team behind the models needs a platform that makes training repeatable, observable and boring—in the best possible way. You would sit between ML researchers, infrastructure engineers and data teams.
+
+What you would take ownership of
+You will evolve our GPU training environment, standardize how experiments are launched, and improve the path from a research repository to a production-ready training job. Today that path uses containerized Python workloads, Kubernetes, Terraform-managed infrastructure and CI/CD in GitHub Actions. Some pipelines land training data in BigQuery; operational metadata is stored in PostgreSQL. You do not need to be a database specialist, but you do need to be comfortable diagnosing data-flow problems.
+
+For this role, production Python and Kubernetes experience are non-negotiable. We also expect solid hands-on experience with Docker, infrastructure-as-code (Terraform or an equivalent tool), and at least one major cloud platform (GCP, AWS or Azure). You should have spent 5+ years in software, ML engineering, data engineering or a closely related production engineering role, including at least 2 years supporting ML/AI workloads in production.
+
+You will work directly with researchers who use PyTorch. You don't have to be a modeling specialist, but you should understand enough of a training loop and GPU workload to troubleshoot platform issues. Experience with distributed data or messaging systems is useful; Kafka or Spark would be a plus. Ray experience gets bonus points, and familiarity with NVIDIA Triton is nice to have rather than required. ✨
+
+We normally look for a bachelor's degree in computer science, engineering or a related technical field, or equivalent practical experience. A master's degree is a plus, not a requirement.
+
+The team communicates in English every day, so professional fluency is required. Dutch is helpful for local collaboration but entirely optional. 🇳🇱
+
+You might enjoy this role if you like removing friction for other engineers, writing clear platform interfaces and chasing down failures that span application code, orchestration and cloud infrastructure.
+
+Benefits: flexible hours, home-office budget, 30 days' leave and an annual learning allowance. 🌍

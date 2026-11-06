@@ -1,0 +1,38 @@
+GROUND TRUTH - CV #2 (MEDIUM)
+
+[Technical Skills]
+- Python
+- PyTorch
+- Hugging Face Transformers
+- BERT / BERT-family transformer models
+- scikit-learn
+- MLflow
+- Docker
+- Google Cloud / Google Cloud Run
+- SQL
+- FastAPI
+
+[Professional Experience]
+- Senior Applied ML Engineer, Verity Labs, Berlin | Feb 2022 - Jul 2025
+  - Led development of a multilingual ticket-routing model.
+  - Fine-tuned BERT-family models with PyTorch and Hugging Face Transformers.
+  - Used MLflow for experiment and artifact tracking.
+  - Ran Dockerized production services on Google Cloud Run.
+  - Defined evaluation sets and analyzed model errors with product/support teams.
+- Data Scientist, Kestrel Media, Madrid | 2019 - 2022
+  - Built text-classification and ranking prototypes for editorial search.
+  - Used Python, scikit-learn, and SQL for experimentation and offline evaluation.
+  - Migrated several prototypes to PyTorch.
+- Volunteer NLP project | 2021
+  - Built a Spanish-language intent classifier.
+  - Exposed it through a FastAPI endpoint for a non-profit helpline.
+
+[Education]
+- MSc, Artificial Intelligence, Universidad Politécnica de Madrid | 2017 - 2019
+  - Thesis: neural text classification for short customer messages.
+- BSc, Telecommunications Engineering, University of Granada | completed 2017
+
+[Languages]
+- Spanish | Native
+- English | C1 / Professional working proficiency
+- French | B1 / Conversational
