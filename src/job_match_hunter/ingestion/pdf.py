@@ -3,16 +3,20 @@ from pathlib import Path
 
 def pdf_to_text(pdf_path: Path) -> str:
     """
-    pdf_path (Path): complete path to the PDF file.
+    Extract text from a PDF file.
 
-    text (str): string containing the content of the PDF file.
+    Args:
+        pdf_path: Complete path to the PDF file.
+
+    Returns:
+        Extracted text.
     """
 
-    pdf = pymupdf.open(pdf_path)
-    text = ''
+    text = ""
 
-    for page in pdf:
-        text += page.get_text().strip().replace("\uFFFD", "")
+    with pymupdf.open(pdf_path) as pdf:
+        for page in pdf:
+            text += page.get_text().strip().replace("\uFFFD", "")
 
     if not text.strip():
         raise ValueError("No text could be extracted from the PDF.")

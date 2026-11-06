@@ -1,0 +1,49 @@
+Samir Novak
+Senior ML Systems Engineer  |  Prague / remote EU
+samir.novak@example.com  |  github.com/snovak-ml
+TECH / PLATFORMS
+Python, C++
+PyTorch; JAX (research
+prototypes)
+Docker / Kubernetes
+Terraform, GitHub Actions
+GCP (GKE, BigQuery)
+Kafka, Apache Spark
+PostgreSQL, Airflow
+LANGUAGES
+Czech — native
+English — fluent (C1)
+German — intermediate (B1)
+EDUCATION
+PhD, Computational Physics —
+Charles University, 2015–2019
+MSc, Applied Mathematics —
+Czech Technical University,
+2013–2015
+EXPERIENCE
+Aster Robotics — Staff ML Platform Engineer
+08/2023–present  |  Prague / hybrid
+• Own the training platform used by perception teams: Python services on Kubernetes, image
+builds with Docker, infrastructure changes through Terraform and GitHub Actions.
+• Moved GPU training jobs from ad-hoc VMs to GKE; introduced experiment metadata in
+PostgreSQL and scheduled data-preparation workflows with Airflow.
+• Partner with researchers using PyTorch; supported one JAX-based prototype without making
+JAX a production dependency.
+Mercury Forecasting — ML Engineer / Data Engineer
+Jan 2020–Jul 2023
+• Built demand-forecasting models in PyTorch and maintained Python/C++ feature-generation
+components for low-latency scoring.
+• Processed event streams with Kafka and Spark; training datasets landed in BigQuery, while
+operational state lived in PostgreSQL.
+• Containerized internal services and helped the team adopt Kubernetes for scheduled inference
+workloads.
+Charles University — Doctoral Researcher
+2015–2019
+Developed simulation and optimization code in Python and C++; later used early PyTorch
+versions for differentiable surrogate models. Research was carried out as part of the PhD in
+Computational Physics.
+SELECTED NOTES
+• Regularly review architecture proposals and mentor two engineers, but remain an individual
+contributor.
+• Comfortable across model-development and platform layers; strongest production experience
+is in Python, Kubernetes and GCP.

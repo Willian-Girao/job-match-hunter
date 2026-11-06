@@ -1,0 +1,27 @@
+Maya Torres
+Applied ML / NLP Engineer · Berlin, Germany · maya.torres@example.com
+PROFILE
+Applied machine-learning engineer focused on language systems. I work mostly in Python and have shipped
+transformer-based services used by internal product teams. Recent work has included Hugging Face Transformers,
+PyTorch, MLflow and Google Cloud; I am also comfortable working with SQL-backed datasets and Dockerized services.
+EXPERIENCE
+Senior Applied ML Engineer / Verity Labs, Berlin | Feb '22 → Jul '25
+• Led development of a multilingual ticket-routing model, fine-tuning BERT-family models with PyTorch and Hugging Face
+Transformers.
+• Tracked experiments and model artifacts in MLflow; production services ran in Docker on Google Cloud Run.
+• Worked with product and support teams to define evaluation sets and analyze model errors.
+Data Scientist — Kestrel Media, Madrid | 2019–2022
+Built text-classification and ranking prototypes for editorial search. Used Python, scikit-learn and SQL for experimentation
+and offline evaluation; later migrated several prototypes to PyTorch.
+EARLIER / SELECTED PROJECT
+Volunteer NLP project (2021): created a small Spanish-language intent classifier and exposed it through a FastAPI
+endpoint for a non-profit helpline.
+EDUCATION
+Universidad Politécnica de Madrid — M.Sc. Artificial Intelligence (2017–2019). Thesis: neural text classification for short
+customer messages.
+University of Granada — B.Sc. Telecommunications Engineering, completed 2017.
+LANGUAGES
+Spanish: native. English: professional working proficiency (C1). French: conversational / B1.
+TOOLKIT SNAPSHOT
+Python · PyTorch · Hugging Face Transformers · scikit-learn · MLflow · Docker · Google Cloud (Cloud Run) · SQL ·
+FastAPI
