@@ -1,7 +1,7 @@
 import pymupdf
 from pathlib import Path
 
-def pdf_to_text(pdf_path: Path) -> str:
+def pdf_to_string(pdf_path: Path) -> str:
     """
     Extract text from a PDF file.
 
