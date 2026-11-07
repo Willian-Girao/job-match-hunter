@@ -52,5 +52,5 @@ def test_txt_to_string(txt_path: Path):
     """
     prompt_txt = txt_to_string(txt_path=txt_path)
 
-    # assert prompt_txt
+    assert prompt_txt
     assert prompt_txt != ''
