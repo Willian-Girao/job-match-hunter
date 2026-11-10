@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 from job_match_hunter.ingestion import pdf_to_string, txt_to_string
 
-root = Path(__file__).resolve().parents[1]
+root = Path(__file__).resolve().parent
 
 prompt_path = Path(f'{root}/src/job_match_hunter/prompts/match_estimation/01_raw_cv_jd_match.txt')
 schema_path = Path(f'{root}/src/job_match_hunter/schemas/match_estimation/raw_cv_jd_match.json')
