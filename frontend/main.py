@@ -1,5 +1,6 @@
 import requests
 import streamlit as st
+import hashlib
 
 st.title("Job Match Hunter")
 
@@ -26,16 +27,42 @@ if submitted:
     else:
         try:
             with st.spinner("Estimating match..."):
+                cv_bytes = uploaded_cv.getvalue()
+
+                # Identify the file by its content, rather than its filename.
+                cv_hash = hashlib.sha256(cv_bytes).hexdigest()
+
+                # This dictionary belongs to the current Streamlit session.
+                if "cv_text_cache" not in st.session_state:
+                    st.session_state["cv_text_cache"] = {}
+
+                cv_cache = st.session_state["cv_text_cache"]
+
+                # Extract only if this PDF has not been processed in this session.
+                if cv_hash not in cv_cache:
+                    extraction_response = requests.post(
+                        "http://127.0.0.1:8000/extract-cv",
+                        files={
+                            "cv_file": (
+                                uploaded_cv.name,
+                                cv_bytes,
+                                "application/pdf",
+                            )
+                        },
+                        timeout=30,
+                    )
+                    extraction_response.raise_for_status()
+
+                    # Cache only after extraction succeeds.
+                    cv_cache[cv_hash] = extraction_response.json()["text"]
+
+                # Every prediction uses the previously extracted text.
                 response = requests.post(
                     "http://127.0.0.1:8000/predict",
-                    files={
-                        "cv_file": (
-                            uploaded_cv.name,
-                            uploaded_cv.getvalue(),
-                            "application/pdf",
-                        )
+                    json={
+                        "cv_text": cv_cache[cv_hash],
+                        "jd_url": jd_url,
                     },
-                    data={"jd_url": jd_url},
                     timeout=120,
                 )
                 response.raise_for_status()

@@ -38,6 +38,13 @@ class PredictionResponse(BaseModel):
     met_elements: list[str] | None
     unmet_mandatory_elements: list[str] | None
 
+class PredictionRequest(BaseModel):
+    cv_text: str = Field(min_length=1)
+    jd_url: HttpsUrl
+
+class CVTextResponse(BaseModel):
+    text: str
+
 HttpsUrl = Annotated[
     HttpUrl,
     UrlConstraints(allowed_schemes=["https"]),
@@ -48,39 +55,29 @@ HttpsUrl = Annotated[
 async def root():
     return {"message": "I'm alive!"}
 
+@app.post("/extract-cv", response_model=CVTextResponse)
+def extract_cv(cv_file: Annotated[UploadFile, File()]) -> CVTextResponse:
+    text = pdf_bytes_to_string(
+        pdf_bytes=cv_file.file.read()
+    )
+    return CVTextResponse(text=text)
+
 @app.post("/predict", response_model=PredictionResponse)
-def predict(
-    cv_file: Annotated[UploadFile, File()],
-    jd_url: Annotated[HttpsUrl, Form()]
-) -> dict[str, Any]:
+def predict(request: PredictionRequest) -> dict[str, Any]:
     """Requests the LLMClient to evaluate the match between a CV and a job description (JD).
-
-    The CV (.pdf file) is converted to text. The JD's HTML is parsed for its content and converted
-    into text. Both texts are given to the LLMClient, which generates a match estimation and reasoning.
-
-    Args:
-        cv_file: A .pdf file.
-        jd_url: An URL for a JD.
-
-    Returns:
-        Structured output from LLMClient.
 
     Sources:
         https://fastapi.tiangolo.com/tutorial/response-model/#response-model-parameter
         https://fastapi.tiangolo.com/tutorial/request-forms-and-files/
     """
-    # Converting CV/JD into input string for the LLM.
-    cv = pdf_bytes_to_string(
-        pdf_bytes=cv_file.file.read()
-    )
-
+    
     jd = html_to_string(
-        url=str(jd_url)
+        url=str(request.jd_url)
     )
 
     # Requesting LLM to estimate match between CV and JD.
     llm_response = llm_client.estimate_match(
-        cv=cv,
+        cv=request.cv_text,
         jd=jd
     )
 
