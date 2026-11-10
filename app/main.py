@@ -1,10 +1,9 @@
-from fastapi import FastAPI
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any
-from pathlib import Path
-from job_match_hunter.ingestion import pdf_to_string, txt_to_string, json_to_dict
+from fastapi import FastAPI, File, Form, UploadFile
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl, UrlConstraints
+from typing import Any, Annotated
+from job_match_hunter.ingestion import pdf_bytes_to_string, txt_to_string, json_to_dict, html_to_string
 from job_match_hunter.clients.llm_client import LLMClient
-from config import PROJECT_ROOT, MATCH_PROMPT_PATH, MATCH_SCHEMA_PATH, MODEL_ID
+from config import MATCH_PROMPT_PATH, MATCH_SCHEMA_PATH, MODEL_ID
 
 # --- Constants ---
 llm_client = LLMClient(
@@ -39,11 +38,10 @@ class PredictionResponse(BaseModel):
     met_elements: list[str] | None
     unmet_mandatory_elements: list[str] | None
 
-class PredictionRequest(BaseModel):
-    """
-    """
-    cv_file: str
-    jd_url: str
+HttpsUrl = Annotated[
+    HttpUrl,
+    UrlConstraints(allowed_schemes=["https"]),
+] # More on URL validation and constraints: https://pydantic.dev/docs/validation/latest/api/pydantic/networks/
 
 # --- API endpoints ---
 @app.get("/")
@@ -51,19 +49,33 @@ async def root():
     return {"message": "I'm alive!"}
 
 @app.post("/predict", response_model=PredictionResponse)
-async def predict(request: PredictionRequest) -> dict[str, Any]:
-    """
+def predict(
+    cv_file: Annotated[UploadFile, File()],
+    jd_url: Annotated[HttpsUrl, Form()]
+) -> dict[str, Any]:
+    """Requests the LLMClient to evaluate the match between a CV and a job description (JD).
+
+    The CV (.pdf file) is converted to text. The JD's HTML is parsed for its content and converted
+    into text. Both texts are given to the LLMClient, which generates a match estimation and reasoning.
+
+    Args:
+        cv_file: A .pdf file.
+        jd_url: An URL for a JD.
+
+    Returns:
+        Structured output from LLMClient.
+
     Sources:
         https://fastapi.tiangolo.com/tutorial/response-model/#response-model-parameter
+        https://fastapi.tiangolo.com/tutorial/request-forms-and-files/
     """
     # Converting CV/JD into input string for the LLM.
-    # TODO: CV and JD temporarilly load here but they'll eventually be sent via the request.
-    cv = pdf_to_string(
-        pdf_path=Path(f'{PROJECT_ROOT}/data/cv_parsing/cv_01_easy.pdf')
+    cv = pdf_bytes_to_string(
+        pdf_bytes=cv_file.file.read()
     )
 
-    jd = txt_to_string(
-        txt_path=Path(f'{PROJECT_ROOT}/data/jd_parsing/jd_03_hard.txt')
+    jd = html_to_string(
+        url=str(jd_url)
     )
 
     # Requesting LLM to estimate match between CV and JD.
