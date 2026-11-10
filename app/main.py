@@ -1,28 +1,20 @@
 from fastapi import FastAPI
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any
 from pathlib import Path
-import json
-from job_match_hunter.ingestion import pdf_to_string, txt_to_string
+from job_match_hunter.ingestion import pdf_to_string, txt_to_string, json_to_dict
 from job_match_hunter.clients.llm_client import LLMClient
+from config import PROJECT_ROOT, MATCH_PROMPT_PATH, MATCH_SCHEMA_PATH, MODEL_ID
 
 # --- Constants ---
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
-prompt = Path(
-    Path(f'{PROJECT_ROOT}/src/job_match_hunter/prompts/match_estimation/01_raw_cv_jd_match.txt')
-).read_text(encoding="utf-8")
-
-with open(
-    Path(f'{PROJECT_ROOT}/src/job_match_hunter/schemas/match_estimation/raw_cv_jd_match.json'),
-    encoding="utf-8"
-    ) as f:
-    schema = json.load(f)
-
 llm_client = LLMClient(
-    model_name="openai/gpt-4.1-nano",
-    prompt=prompt,
-    schema=schema,
+    model_name=MODEL_ID,
+    prompt=txt_to_string(
+        txt_path=MATCH_PROMPT_PATH
+    ),
+    schema=json_to_dict(
+        json_path=MATCH_SCHEMA_PATH
+    )
 )
 
 # --- FastAPI App ---
@@ -35,15 +27,17 @@ class PredictionResponse(BaseModel):
         https://pydantic.dev/docs/validation/dev/concepts/json/
         https://pydantic.dev/docs/validation/2.0/usage/model_config/
     """
-    model_config = ConfigDict(strict=True) # TODO: this might not be necessary.
+    model_config = ConfigDict(
+        strict=True
+    ) # helps in detecting unexpected output types instead of silently converting them.
 
-    score: float
+    score: float = Field(ge=0, le=100)
     score_reason: str
     opinion: str
-    mandatory_elements: list | None
-    optional_elements: list | None
-    met_elements: list | None
-    unmet_mandatory_elements: list | None
+    mandatory_elements: list[str] | None
+    optional_elements: list[str] | None
+    met_elements: list[str] | None
+    unmet_mandatory_elements: list[str] | None
 
 class PredictionRequest(BaseModel):
     """
@@ -57,7 +51,7 @@ async def root():
     return {"message": "I'm alive!"}
 
 @app.post("/predict", response_model=PredictionResponse)
-async def predict(request: PredictionRequest) -> dict:
+async def predict(request: PredictionRequest) -> dict[str, Any]:
     """
     Sources:
         https://fastapi.tiangolo.com/tutorial/response-model/#response-model-parameter
