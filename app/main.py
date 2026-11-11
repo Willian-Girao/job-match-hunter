@@ -36,11 +36,11 @@ class PredictionResponse(BaseModel):
 
     score: float = Field(ge=0, le=100)
     score_reason: str
-    opinion: str
-    mandatory_elements: list[str] | None
-    optional_elements: list[str] | None
-    met_elements: list[str] | None
-    unmet_mandatory_elements: list[str] | None
+    all_requirements: list[str]
+    mandatory_requirements: list[str] | None
+    optional_requirements: list[str] | None
+    met_requirements: list[str] | None
+    unmet_requirements: list[str] | None
 
 class PredictionRequest(BaseModel):
     cv_text: str = Field(min_length=1)
