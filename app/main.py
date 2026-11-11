@@ -1,8 +1,12 @@
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi.concurrency import run_in_threadpool
+from uuid import uuid4
+from fastapi import FastAPI, File, UploadFile, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, UrlConstraints
 from typing import Any, Annotated
 from job_match_hunter.ingestion import pdf_bytes_to_string, txt_to_string, json_to_dict, html_to_string
 from job_match_hunter.clients.llm_client import LLMClient
+from job_match_hunter.error_logging import log_error
 from config import MATCH_PROMPT_PATH, MATCH_SCHEMA_PATH, MODEL_ID
 
 # --- Constants ---
@@ -51,6 +55,36 @@ HttpsUrl = Annotated[
 ] # More on URL validation and constraints: https://pydantic.dev/docs/validation/latest/api/pydantic/networks/
 
 # --- API endpoints ---
+@app.exception_handler(Exception)
+async def unexpected_error_handler(
+    request: Request,
+    exc: Exception
+) -> JSONResponse:
+    """Handle exceptions globally with FastAPI.
+    
+    Sources:
+        https://fastapi.tiangolo.com/tutorial/handling-errors/#install-custom-exception-handlers
+    """
+    # Generate a random UUID in a cryptographically-secure method according to RFC 9562, §5.4.
+    request_id = str(uuid4())
+
+    # Error handler is async but the Supabase client used by log_error() is synchronous.
+    # Use `run_in_threadpool` to run `log_error()` synchronously without blocking the event loop.
+    await run_in_threadpool(
+        log_error,
+        error=exc,
+        stage=request.url.path,
+        request_id=request_id,
+    )
+
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": "An unexpected error occurred.",
+            "request_id": request_id,
+        },
+    )
+
 @app.get("/")
 async def root():
     return {"message": "I'm alive!"}

@@ -4,14 +4,16 @@ import re
 import json
 
 def input_tokens_counter(model_name: str) -> Callable[[list, dict], int]:
-    """
-    Returns a function, based on `model_name`, that computes total input token count.
+    """Returns a function, based on `model_name`, that computes total input token count.
 
     Args:
         model_name: OpenRouter model ID.
 
     Returns:
         Function computing input token count.
+
+    Raises:
+        ValueError: Function not implemented for the given model ID.
     """
     if re.search(r"gpt-4\.1-nano", model_name):
         return load_gpt_4_1_nano_validator
@@ -19,8 +21,7 @@ def input_tokens_counter(model_name: str) -> Callable[[list, dict], int]:
         raise ValueError(f'Function not implemented for OpenRouter model ID `{model_name}`.')
 
 def load_gpt_4_1_nano_validator(messages: list, schema: dict) -> int:
-    """
-    Computes total input token count.
+    """Computes total input token count.
 
     Args:
         messages: List provided as the `messages` argument to OpenAI's (synchronous) client instance.
