@@ -18,35 +18,35 @@
           "type": "array",
           "items": {
             "type": "string",
-            "description": "All requirements request by the JD."
+            "description": "All requirements requested in the JD."
           }
         },
         "mandatory_requirements": {
           "type": ["array", "null"],
           "items": {
             "type": "string",
-            "description": "Requirements described as mandatory in the JD, if any; otherwise null. Account for semantic meaning rather than relying only on explicit words such as `mandatory`."
+            "description": "Items in `all_requirements` that are described as mandatory by the JD, if any; otherwise null. Account for semantic meaning rather than relying only on explicit words such as `mandatory`."
           }
         },
         "optional_requirements": {
           "type": ["array", "null"],
           "items": {
             "type": "string",
-            "description": "Requirements described as optional in the JD, if any; otherwise null. Account for semantic meaning rather than relying only on explicit words such as `optional`."
+            "description": "Items in `all_requirements` that are described as optional by the JD, if any; otherwise null. Account for semantic meaning rather than relying only on explicit words such as `optional`."
           }
         },
         "met_requirements": {
           "type": ["array", "null"],
           "items": {
             "type": "string",
-            "description": "Requirements found within the JD that are supported in the CV, if any; otherwise null."
+            "description": "Items in `all_requirements` that are supported by the CV, if any; otherwise null."
           }
         },
         "unmet_requirements": {
           "type": ["array", "null"],
           "items": {
             "type": "string",
-            "description": "Requirements found within the JD that are not supported in the CV, if any; otherwise null."
+            "description": "Items in `all_requirements` that are not supported by the CV, if any; otherwise null."
           }
         }
       },
