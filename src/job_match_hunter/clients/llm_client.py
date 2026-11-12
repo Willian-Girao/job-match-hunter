@@ -100,6 +100,7 @@ class LLMClient:
                     model=self.model_name,
                     messages=messages,
                     temperature=0.0,
+                    seed=0,
                     extra_body={
                         "provider": {
                             "require_parameters": True,
