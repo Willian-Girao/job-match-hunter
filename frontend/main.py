@@ -88,7 +88,6 @@ def requirement_card(
         f'{body}</section>'
     )
 
-
 def render_prediction(result: dict[str, Any]) -> None:
     """Display the prediction in three full-width rows.
     """
@@ -99,7 +98,7 @@ def render_prediction(result: dict[str, Any]) -> None:
     jd_requirements = result.get("jd_requirements") or []
 
     # Row 1: bordered outer grid with two borderless, vertically centered columns.
-    st.caption("The match score is calculated by dividing the number of requirements met by the CV by the total number of mandatory and uncategorized requirements in the job description.")
+    st.caption("The match score is calculated by dividing the number of requirements met by the CV by the total number of mandatory and uncategorized requirements in the job description (JD).")
 
     with st.container(border=True):
         score_column, chart_column = st.columns(
@@ -223,6 +222,21 @@ if submitted:
                 response.raise_for_status()
 
             st.session_state["prediction_result"] = response.json()
+
+        except requests.HTTPError as exc:
+            # `response.raise_for_status()` raises an HTTPError for the 502 response (sent by the FastAPI).
+            # The backend response is available on the exception.
+            error_response = exc.response
+
+            try:
+                error = error_response.json()
+            except ValueError:
+                error = {}
+
+            if error.get("error_code") == "JOB_DESCRIPTION_FETCH_FAILED":
+                st.error(error["detail"])
+            else:
+                st.error("Could not complete the prediction. Please try again.")
 
         except requests.RequestException as exc:
             st.error(f"Could not complete the prediction: {exc}")
