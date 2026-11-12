@@ -7,6 +7,7 @@ from typing import Any, Annotated
 from job_match_hunter.ingestion import pdf_bytes_to_string, txt_to_string, json_to_dict, html_to_string
 from job_match_hunter.clients.llm_client import LLMClient
 from job_match_hunter.error_logging import log_error
+from job_match_hunter.output_processing import calculate_match_percentage
 from config import MATCH_PROMPT_PATH, MATCH_SCHEMA_PATH, MODEL_ID
 
 # --- Constants ---
@@ -35,12 +36,12 @@ class PredictionResponse(BaseModel):
     ) # helps in detecting unexpected output types instead of silently converting them.
 
     score: float = Field(ge=0, le=100)
-    score_reason: str
-    all_requirements: list[str]
-    mandatory_requirements: list[str] | None
-    optional_requirements: list[str] | None
-    met_requirements: list[str] | None
-    unmet_requirements: list[str] | None
+    match_evaluation: str
+    jd_requirements: list[str]
+    mandatory: list[str] | None
+    optional: list[str] | None
+    met: list[str] | None
+    unmet: list[str] | None
 
 class PredictionRequest(BaseModel):
     cv_text: str = Field(min_length=1)
@@ -114,5 +115,21 @@ def predict(request: PredictionRequest) -> dict[str, Any]:
         cv=request.cv_text,
         jd=jd
     )
+
+    # Compute match percentage between CV and JD.
+    llm_response["score"] = calculate_match_percentage(
+        jd_requirements=llm_response["jd_requirements"],
+        met_requirements=llm_response["met"] if llm_response["met"] else [],
+    )
+
+    print('\n')
+    for key, val in llm_response.items():
+        if type(val) != list:
+            print(f'{key}: ', val, '\n')
+        else:
+            print(f'{key}: ', '\n')
+            for v in val:
+                print(f'- {v}', '\n')
+
 
     return llm_response

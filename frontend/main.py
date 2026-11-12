@@ -65,7 +65,6 @@ def requirement_card(
         items.append(
             f'<li style="background:{bg};color:{fg};padding:10px 12px;'
             f'border-radius:6px;margin-bottom:8px;overflow-wrap:anywhere;">'
-            f'<small><strong>{label}</strong></small><br>'
             f'{escape(requirement)}</li>'
         )
     body = (
@@ -87,11 +86,11 @@ def requirement_card(
 
 def render_prediction(result: dict[str, Any]) -> None:
     """Display the prediction in three full-width rows."""
-    mandatory = set(result.get("mandatory_requirements") or [])
-    optional = set(result.get("optional_requirements") or [])
-    met = result.get("met_requirements") or []
-    unmet = result.get("unmet_requirements") or []
-    all_requirements = result.get("all_requirements") or []
+    mandatory = set(result.get("mandatory") or [])
+    optional = set(result.get("optional") or [])
+    met = result.get("met") or []
+    unmet = result.get("unmet") or []
+    jd_requirements = result.get("jd_requirements") or []
 
     # Row 1: bordered outer grid with two borderless, vertically centered columns.
     with st.container(border=True):
@@ -100,7 +99,7 @@ def render_prediction(result: dict[str, Any]) -> None:
         )
         with score_column:
             st.metric("Match score", f'{result["score"]:g}%')
-            st.write(result.get("score_reason") or "No explanation provided.")
+            st.write(result.get("match_evaluation") or "No explanation provided.")
         with chart_column:
             if met or unmet:
                 st.plotly_chart(
@@ -126,13 +125,13 @@ def render_prediction(result: dict[str, Any]) -> None:
         with optional_column:
             requirement_card(
                 "Optional requirements",
-                [req for req in all_requirements if req in optional],
+                [req for req in jd_requirements if req in optional],
                 mandatory, optional, background="optional",
             )
         with mandatory_column:
             requirement_card(
                 "Mandatory requirements",
-                [req for req in all_requirements if req in mandatory],
+                [req for req in jd_requirements if req in mandatory],
                 mandatory, optional, background="mandatory",
             )
 
