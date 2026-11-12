@@ -35,7 +35,21 @@ class LLMClient:
             model_name=self.model_name
         )
 
-    def estimate_match(self, cv: str, jd: str, attempts: int=2) -> dict:
+    def estimate_match(self, cv: str, jd: str, attempts: int=3) -> dict:
+        """Passes `cv` and `jd` to LLM client and prompts it to estimate match.
+
+        Args:
+            cv: The CV of a candidate.
+            jd: The description of a job vacancy.
+            attempts: Number of attempts in case of rate limits.
+
+        Returns:
+            Structured output from LLM call.
+
+        Raises:
+            ValueError: LLM call returns with `finish_reason` different from `stop`.
+            ValueError: Input to the LLM axceeds its context window.
+        """
         # Current date (helps mode figure out time durations that use `<month> <year> - Present`).
         x = datetime.datetime.now()
         current_date = f'{x.strftime("%B")} {x.strftime("%Y")}'
@@ -72,47 +86,51 @@ class LLMClient:
         )
 
         if tokens_count > self._context_length:
-            return {} # TODO: need to handle CV/JD being too big for the model; needs handling.
+            # TODO: need to handle CV/JD being too big for the model.
+            raise ValueError(
+                f"Input contains {tokens_count} tokens, "
+                f"exceeding the model's context limit of {self._context_length}."
+            )
 
         # Sending request to the LLM.
-        try:
+        for attempt in range(attempts):
             # In the case there are rate limits, try a few times.
-            for attempt in range(attempts):
-                try:
-                    response = self._client.chat.completions.create(
-                        model=self.model_name,
-                        messages=messages,
-                        temperature=0.0,
-                        extra_body={
-                            "provider": {
-                                "require_parameters": True,
-                            }
-                        },
-                        response_format=self.schema
-                    )
-                    break
-                except RateLimitError:
-                    if attempt == attempts:
-                        raise
-                    time.sleep(2 * (attempt + 1))
+            try:
+                response = self._client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    temperature=0.0,
+                    seed=0,
+                    extra_body={
+                        "provider": {
+                            "require_parameters": True,
+                            "zdr": True
+                        }
+                    },
+                    response_format=self.schema
+                )
+                break
+            except RateLimitError:
+                if attempt == attempts:
+                    raise
+                time.sleep(5 * (attempt + 1))
 
-            finish_reason = response.choices[0].finish_reason
-            llm_response = json.loads(response.choices[0].message.content)
-
-        except Exception as e:
-            raise ValueError(f"{type(e).__name__}: {e}")
+        finish_reason = response.choices[0].finish_reason
+        llm_response = json.loads(response.choices[0].message.content)
 
         if finish_reason != 'stop':
-            return {} # TODO: something went wrong generating the output; needs handling.
+            raise ValueError(f"LLM replied with `finish_reason` as `{finish_reason}`.")
 
         return llm_response
 
     def _get_context_limit(self) -> int:
-        """
-        Retrieves the context length size given in OpenRouter's documentation for `model_name`.
+        """Retrieves the context length size given in OpenRouter's documentation for `model_name`.
     
         Returns:
             Model's context window size.
+
+        Raises:
+            ValueError: Model ID not found on OpenRouter models list.
         """
         response = requests.get(
             "https://openrouter.ai/api/v1/models",

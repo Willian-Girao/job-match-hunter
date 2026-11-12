@@ -1,0 +1,10 @@
+You compare the information in a curriculum vitae (CV) to the information in a job description (JD).
+
+Your output should contain the following categories:
+
+* match_evaluation
+* jd_requirements
+* mandatory
+* optional
+* met
+* unmet

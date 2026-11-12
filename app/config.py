@@ -4,12 +4,15 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
+PROMPT = "01_raw_cv_jd_match_v12.txt"
+SCHEMA = "01_raw_cv_jd_match_v1.json"
+
 MATCH_PROMPT_PATH = (
-    PROJECT_ROOT / "src" / "job_match_hunter" / "prompts" / "match_estimation" / "01_raw_cv_jd_match.txt"
+    PROJECT_ROOT / "src" / "job_match_hunter" / "prompts" / "match_estimation" / PROMPT
 )
 
 MATCH_SCHEMA_PATH = (
-    PROJECT_ROOT / "src" / "job_match_hunter" / "schemas" / "match_estimation" / "raw_cv_jd_match.json"
+    PROJECT_ROOT / "src" / "job_match_hunter" / "schemas" / "match_estimation" / SCHEMA
 )
 
 # --- LLM Related ---

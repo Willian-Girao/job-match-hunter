@@ -4,8 +4,7 @@ import json
 from bs4 import BeautifulSoup, Comment
 
 def html_to_string(url: str, timeout: int = 30, min_len: int=500) -> str:
-    """
-    Extract HTML text, separating headings and paragraphs with blank lines.
+    """Extract HTML text, separating headings and paragraphs with blank lines.
 
     Args:
         url: Web address.
@@ -16,9 +15,8 @@ def html_to_string(url: str, timeout: int = 30, min_len: int=500) -> str:
         Extracted text.
 
     Raises:
-        ValueError: If no text could be extracted.
+        ValueError: No text could be extracted from the web page.
     """
-
     # Identify the application to websites that require a descriptive User-Agent.
     request = Request(
         url,

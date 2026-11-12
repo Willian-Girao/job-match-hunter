@@ -79,13 +79,12 @@ def test_json_to_dict(json_path: Path):
     assert json_dict
     assert json_dict["json_schema"]
     assert json_dict["json_schema"]["schema"]
-    assert json_dict["json_schema"]["schema"]["properties"]["score"]
-    assert json_dict["json_schema"]["schema"]["properties"]["score_reason"]
-    assert json_dict["json_schema"]["schema"]["properties"]["opinion"]
-    assert json_dict["json_schema"]["schema"]["properties"]["mandatory_elements"]
-    assert json_dict["json_schema"]["schema"]["properties"]["optional_elements"]
-    assert json_dict["json_schema"]["schema"]["properties"]["met_elements"]
-    assert json_dict["json_schema"]["schema"]["properties"]["unmet_mandatory_elements"]
+    assert json_dict["json_schema"]["schema"]["properties"]["match_evaluation"]
+    assert json_dict["json_schema"]["schema"]["properties"]["jd_requirements"]
+    assert json_dict["json_schema"]["schema"]["properties"]["mandatory"]
+    assert json_dict["json_schema"]["schema"]["properties"]["optional"]
+    assert json_dict["json_schema"]["schema"]["properties"]["met"]
+    assert json_dict["json_schema"]["schema"]["properties"]["unmet"]
 
 # 4. HTML ingestion.
 

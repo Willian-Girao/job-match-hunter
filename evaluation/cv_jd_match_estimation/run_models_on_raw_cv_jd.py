@@ -45,7 +45,7 @@ match_schema_files = [file for file in os.listdir(schema_match_path) if file.end
 
 # 2. Compare CVs with JDs ----------
 
-for model_name in models:
+for model_name in ["openai/gpt-4.1-nano"]:
     for schema in match_schema_files:
         for prompt in match_prompt_files:
             for cv in cv_files:

@@ -1,0 +1,60 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "cv_jd_match",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "match_evaluation": {
+          "type": "string",
+          "description": "A short explanation of how well the CV matches what is asked in the JD."
+        },
+        "jd_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "List of requirements for the job position described in the JD."
+          }
+        },
+        "mandatory": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "Mandatory requirements listed in the JD, if any; otherwise null. Account for semantic meaning rather than relying only on explicit words such as `mandatory`."
+          }
+        },
+        "optional": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "Optional requirements listed in the JD, if any; otherwise null. Account for semantic meaning rather than relying only on explicit words such as `optional`."
+          }
+        },
+        "met": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "Requirements for the job position that are supported by the CV, if any; otherwise null."
+          }
+        },
+        "unmet": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "description": "Requirements for the job position that are not supported by the CV, if any; otherwise null."
+          }
+        }
+      },
+      "required": [
+        "match_evaluation",
+        "jd_requirements",
+        "mandatory",
+        "optional",
+        "met",
+        "unmet"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

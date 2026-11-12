@@ -9,8 +9,10 @@ def pdf_to_string(pdf_path: Path) -> str:
 
     Returns:
         Extracted text.
-    """
 
+    Raises:
+        ValueError: No text could be extracted from the PDF.
+    """
     text = ""
 
     with pymupdf.open(pdf_path) as pdf:
@@ -30,6 +32,9 @@ def pdf_bytes_to_string(pdf_bytes: bytes) -> str:
 
     Returns:
         Extracted text.
+
+    Raises:
+        ValueError: No text could be extracted from the PDF.
     """
     with pymupdf.open(stream=pdf_bytes, filetype="pdf") as pdf:
         pages = [

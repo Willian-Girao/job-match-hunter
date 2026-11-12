@@ -1,8 +1,15 @@
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi.concurrency import run_in_threadpool
+from uuid import uuid4
+from fastapi import FastAPI, File, UploadFile, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, UrlConstraints
 from typing import Any, Annotated
+from urllib.error import URLError
+
 from job_match_hunter.ingestion import pdf_bytes_to_string, txt_to_string, json_to_dict, html_to_string
 from job_match_hunter.clients.llm_client import LLMClient
+from job_match_hunter.error_logging import log_error
+from job_match_hunter.output_processing import calculate_match_percentage
 from config import MATCH_PROMPT_PATH, MATCH_SCHEMA_PATH, MODEL_ID
 
 # --- Constants ---
@@ -31,12 +38,12 @@ class PredictionResponse(BaseModel):
     ) # helps in detecting unexpected output types instead of silently converting them.
 
     score: float = Field(ge=0, le=100)
-    score_reason: str
-    opinion: str
-    mandatory_elements: list[str] | None
-    optional_elements: list[str] | None
-    met_elements: list[str] | None
-    unmet_mandatory_elements: list[str] | None
+    match_evaluation: str
+    jd_requirements: list[str]
+    mandatory: list[str] | None
+    optional: list[str] | None
+    met: list[str] | None
+    unmet: list[str] | None
 
 class PredictionRequest(BaseModel):
     cv_text: str = Field(min_length=1)
@@ -49,6 +56,67 @@ HttpsUrl = Annotated[
     HttpUrl,
     UrlConstraints(allowed_schemes=["https"]),
 ] # More on URL validation and constraints: https://pydantic.dev/docs/validation/latest/api/pydantic/networks/
+
+# --- Error handlers ---
+@app.exception_handler(Exception)
+async def unexpected_error_handler(
+    request: Request,
+    exc: Exception
+) -> JSONResponse:
+    """Handle exceptions globally with FastAPI.
+    
+    Sources:
+        https://fastapi.tiangolo.com/tutorial/handling-errors/#install-custom-exception-handlers
+    """
+    # Generate a random UUID in a cryptographically-secure method according to RFC 9562, §5.4.
+    request_id = str(uuid4())
+
+    # Error handler is async but the Supabase client used by log_error() is synchronous.
+    # Use `run_in_threadpool` to run `log_error()` synchronously without blocking the event loop.
+    await run_in_threadpool(
+        log_error,
+        error=exc,
+        stage=request.url.path,
+        request_id=request_id,
+    )
+
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": "An unexpected error occurred."
+        },
+    )
+
+@app.exception_handler(URLError)
+async def url_error_handler(
+    request: Request,
+    exc: URLError,
+) -> JSONResponse:
+    """Captures errors occuring when trying to access the URL provided by the user.
+    """
+    request_id = str(uuid4())
+
+    # TODO: maybe this shouldn't be logged into the database.
+    await run_in_threadpool(
+        log_error,
+        exc,
+        stage=request.url.path,
+        request_id=request_id,
+    )
+
+    # HTTP 502 Bad Gateway server error response status code indicates that a server was acting 
+    # as a gateway or proxy and that it received an invalid response from the upstream server.
+    return JSONResponse(
+        status_code=502,
+        content={
+            "detail": (
+                "Could not retrieve the job description. "
+                "Check the URL and try again. "
+                "If the problem persists, try another job posting."
+            ),
+            "error_code": "JOB_DESCRIPTION_FETCH_FAILED"
+        },
+    )
 
 # --- API endpoints ---
 @app.get("/")
@@ -80,5 +148,21 @@ def predict(request: PredictionRequest) -> dict[str, Any]:
         cv=request.cv_text,
         jd=jd
     )
+
+    # Compute match percentage between CV and JD.
+    llm_response["score"] = calculate_match_percentage(
+        jd_requirements=llm_response["jd_requirements"],
+        met_requirements=llm_response["met"] if llm_response["met"] else [],
+    )
+
+    # print('\n')
+    # for key, val in llm_response.items():
+    #     if type(val) != list:
+    #         print(f'{key}: ', val, '\n')
+    #     else:
+    #         print(f'{key}: ', '\n')
+    #         for v in val:
+    #             print(f'- {v}', '\n')
+
 
     return llm_response
