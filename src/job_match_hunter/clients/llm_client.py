@@ -104,6 +104,7 @@ class LLMClient:
                     extra_body={
                         "provider": {
                             "require_parameters": True,
+                            "zdr": True
                         }
                     },
                     response_format=self.schema
