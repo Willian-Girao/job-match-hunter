@@ -4,8 +4,8 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-PROMPT = "01_raw_cv_jd_match_v1.txt"
-SCHEMA = "01_raw_cv_jd_match_v12.json"
+PROMPT = "01_raw_cv_jd_match_v12.txt"
+SCHEMA = "01_raw_cv_jd_match_v1.json"
 
 MATCH_PROMPT_PATH = (
     PROJECT_ROOT / "src" / "job_match_hunter" / "prompts" / "match_estimation" / PROMPT
