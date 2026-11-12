@@ -122,14 +122,14 @@ def predict(request: PredictionRequest) -> dict[str, Any]:
         met_requirements=llm_response["met"] if llm_response["met"] else [],
     )
 
-    print('\n')
-    for key, val in llm_response.items():
-        if type(val) != list:
-            print(f'{key}: ', val, '\n')
-        else:
-            print(f'{key}: ', '\n')
-            for v in val:
-                print(f'- {v}', '\n')
+    # print('\n')
+    # for key, val in llm_response.items():
+    #     if type(val) != list:
+    #         print(f'{key}: ', val, '\n')
+    #     else:
+    #         print(f'{key}: ', '\n')
+    #         for v in val:
+    #             print(f'- {v}', '\n')
 
 
     return llm_response
