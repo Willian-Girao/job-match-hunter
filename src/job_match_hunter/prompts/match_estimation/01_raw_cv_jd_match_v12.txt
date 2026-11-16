@@ -14,9 +14,9 @@ Rules for output generation:
 
 * The text inside the output property "optional" should not be included inside "jd_requirements".
 
-* The output property "met" should be populated using the content of "jd_requirements"
+* The output property "met" should be populated using the content of "jd_requirements".
 
-* The output property "unmet" should be populated using the content of "jd_requirements"
+* The output property "unmet" should be populated using the content of "jd_requirements".
 
 Example of how to populate the output given a JD and a CV:
 
