@@ -25,7 +25,7 @@ class LLMClient:
         self.schema = schema
 
         self._client = OpenAI(
-            base_url='https://openrouter.ai/api/v1',
+            base_url=os.environ['MODELS_BASE_URL'],
             api_key=os.environ['OPENROUTER_API_KEY']
         )
 
