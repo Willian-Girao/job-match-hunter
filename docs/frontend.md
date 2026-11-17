@@ -4,7 +4,7 @@
 
 ## Why Streamlit
 
-Streamlit was chosen because the first product goal is to validate and deploy the AI workflow quickly rather than invest heavily in frontend infrastructure.
+`Streamlit` was chosen because the first product goal is to validate and deploy the AI workflow quickly rather than invest heavily in frontend infrastructure.
 
 The UI is deliberately simple:
 
@@ -44,7 +44,7 @@ This makes the score more inspectable: the user can see what the model treated a
 
 ## CV session cache
 
-Streamlit reruns the script during user interaction, so repeatedly extracting the same PDF would be unnecessary work.
+`Streamlit` reruns the script during user interaction, so repeatedly extracting the same PDF would be unnecessary work.
 
 The frontend therefore:
 
@@ -71,7 +71,7 @@ The hash is used as a content-based cache key: identical file bytes produce the 
 
 The current application does not use persistent candidate profiles.
 
-The extracted CV text is held in Streamlit session state so it can survive reruns within that user's active session. It is not intended to be stored as a permanent CV record in the application database.
+The extracted CV text is held in `Streamlit` session state so it can survive reruns within that user's active session. It is not intended to be stored as a permanent CV record in the application database.
 
 This is separate from experiment/operational data stored in Supabase.
 

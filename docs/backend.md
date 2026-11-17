@@ -4,7 +4,7 @@
 
 ## Overview
 
-The backend is implemented with FastAPI and separates ingestion, model interaction, score calculation, and HTTP error handling.
+The backend is implemented with `FastAPI` and separates ingestion, model interaction, score calculation, and HTTP error handling.
 
 The high-level processing path is:
 
@@ -18,7 +18,7 @@ The high-level processing path is:
 
 ## LLM client
 
-The application uses the OpenAI Python client as an API-format client and points it at OpenRouter's OpenAI-compatible base URL.
+The application uses the OpenAI `Python` client as an API-format client and points it at `OpenRouter`'s OpenAI-compatible base URL.
 
 Conceptually:
 
@@ -34,7 +34,7 @@ OpenRouter
 selected model provider
 ```
 
-Using OpenRouter during experimentation made it possible to compare models from multiple providers through a common interface.
+Using `OpenRouter` during experimentation made it possible to compare models from multiple providers through a common interface.
 
 The rest of the application should depend on the application's own LLM-client interface rather than on OpenRouter-specific details wherever possible.
 
@@ -59,7 +59,7 @@ This is a routing requirement, not a claim that the LLM output is always correct
 
 ## Structured output
 
-The match model returns data constrained by a JSON Schema.
+The match model returns data constrained by a `JSON` Schema.
 
 The current logical fields are:
 
@@ -149,9 +149,9 @@ This gives the user a useful message without exposing stack traces while still m
 
 ## Supabase
 
-Supabase has been used for two different engineering purposes:
+`Supabase` has been used for two different engineering purposes:
 
-1. **experiment tracking** — model, prompt, schema, input, latency, cost, error, output, ground truth, score, and related metadata;
-2. **operational error analysis** — unexpected backend failures.
+1. **experiment tracking**: model, prompt, schema, input, latency, cost, error, output, ground truth, score, and related metadata;
+2. **operational error analysis**: unexpected backend failures.
 
 Candidate CV content is not intended to be stored as persistent application data in the current version.

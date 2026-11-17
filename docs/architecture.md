@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Job Match Hunter compares a candidate CV against a job posting and returns both a structured requirement-level comparison and a numerical match score.
+Job Match Hunter compares a candidate CV against a job description (JD) and returns both a structured requirement-level comparison and a numerical match score.
 
 The current architecture is the result of an experimental change from the project's original design.
 
@@ -57,7 +57,7 @@ This separation has two advantages:
 
 ### Job description
 
-The user provides a job-posting URL. The backend retrieves the page and extracts useful text while removing obvious non-content elements such as scripts, styles, navigation, and footer content. Structured `JobPosting` JSON-LD can be used when it is available.
+The user provides a job-posting URL. The backend retrieves the page and extracts useful text while removing obvious non-content elements such as scripts, styles, navigation, and footer content.
 
 External page retrieval is a failure boundary of the system: some job sites may be unavailable, protected, or rendered in ways that prevent reliable extraction.
 
@@ -134,9 +134,9 @@ The match percentage is computed from the model's structured result rather than 
 
 ## Context-window validation
 
-Before an inference request is sent, the application counts the tokens required by the messages and structured-output schema. The request should be rejected or handled explicitly if it exceeds the selected model's context length.
+Before an inference request is sent, the application counts the tokens required by the messages and structured-output schema. Currently, the request is rejected if it exceeds the selected model's context length. This keeps a model limit from becoming an opaque provider-side failure.
 
-This keeps a model limit from becoming an opaque provider-side failure.
+A future update for the application is planned to address this by chunking requests that exceeds the model's context length, instead of rejecting it.
 
 ## Component boundaries
 

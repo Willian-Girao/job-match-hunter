@@ -69,7 +69,7 @@ One useful result was that **model and prompt quality were task-dependent**: the
 
 The original architecture parsed the CV and JD independently before matching them. Benchmarking showed that this introduced avoidable error propagation and did not provide enough reliability for deterministic downstream semantic comparison.
 
-I therefore tested a simpler alternative: provide the raw CV and JD text directly to the match model, constrain its response with a JSON Schema, and compute the numerical score from the returned requirement sets.
+I therefore tested a simpler alternative: provide the raw CV and JD text directly to the match model, constrain its response with a `JSON` schema, and compute the numerical score from the returned requirement sets.
 
 That became the current design.
 
@@ -134,7 +134,7 @@ More detail: [Frontend and data handling](docs/frontend.md)
 | API | FastAPI |
 | Frontend | Streamlit |
 | LLM access | OpenAI Python client + OpenRouter |
-| Structured generation | JSON Schema / structured outputs |
+| Structured outputs | JSON Schema |
 | PDF ingestion | PyMuPDF |
 | Job-page ingestion | HTTP + HTML parsing |
 | Validation / models | Pydantic |
@@ -181,17 +181,15 @@ The repository separates application code, AI artifacts, evaluation, tests, and 
 
 Some of the most important decisions:
 
-- benchmark prompts and models at all levels of processing involving LLMs;
-- version prompts and JSON Schemas because both affect model behavior;
+- benchmark prompts, JSON schemas, and models at all levels of processing involving LLMs;
+- version prompts and JSON schemas because both affect model behavior;
 - pair human-reviewed evaluation with automated judge (rather than trusting an automated judge alone);
 - prefer different model/prompt configurations when the benchmark supports it;
-- abandon the initial multi-stage matching architecture when experiments exposed error propagation;
 - separate probabilistic semantic reasoning from deterministic score calculation;
 - cache CV extraction per frontend session;
-- restrict LLM routing to zero-data-retention providers;
 - centralize unexpected API error handling while giving known external failures specific responses.
 
-The reasoning behind these choices is documented in [Engineering decisions](docs/decisions.md).
+The reasoning behind some of these choices is documented in [engineering decisions](docs/decisions.md).
 
 ## Current limitations
 

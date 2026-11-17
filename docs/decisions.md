@@ -14,8 +14,6 @@ This page records the decisions that most changed the system and the reasoning b
 
 **Outcome:** Feasibility was validated, and the MVP exposed the next engineering questions organically.
 
----
-
 ## 2. Convert PDFs to text before model calls
 
 **Decision:** Extract PDF text before inference rather than relying on each model/provider's native document handling.
@@ -27,17 +25,13 @@ This page records the decisions that most changed the system and the reasoning b
 - text input is cheaper and easier to inspect;
 - PDF parsing becomes a separately testable component.
 
----
-
 ## 3. Treat prompts and schemas as versioned artifacts
 
-**Decision:** Keep prompts and JSON Schemas versioned rather than embedding them invisibly inside application code.
+**Decision:** Keep prompts and `JSON` schemas versioned rather than embedding them invisibly inside application code.
 
 **Why:** Both prompt instructions and schema descriptions materially changed model outputs during benchmarking.
 
 **Lesson:** In an LLM system, the schema can be part of the behavioral specification, not merely an output datatype.
-
----
 
 ## 4. Evaluate components before the full pipeline
 
@@ -47,11 +41,9 @@ This page records the decisions that most changed the system and the reasoning b
 
 **Decision:** Create small annotated test sets for CV and JD parsing, evaluate those components independently, then evaluate the match task.
 
-**Why:** AI-system failures need to be diagnosable.
+**Why:** Generative AI-system failures need to be diagnosable.
 
----
-
-## 5. Use automated annotation to accelerate—not replace—human review
+## 5. Use automated annotation to accelerate (not replace) human review
 
 **Decision:** Use a stronger LLM to create first-pass quality scores and explanations for large benchmark result sets.
 
@@ -61,8 +53,6 @@ This page records the decisions that most changed the system and the reasoning b
 
 **Lesson:** An LLM judge is an evaluation tool, not ground truth.
 
----
-
 ## 6. Do not assume one model or prompt is best for every task
 
 **Observation:** CV and JD extraction favored different configurations.
@@ -71,8 +61,6 @@ This page records the decisions that most changed the system and the reasoning b
 - JD extraction: `inception/mercury-2.5` + `jd_03_persona_fewshot.txt`
 
 **Lesson:** Even similar LLM tasks can have different ambiguity profiles and therefore different optimal prompt/model choices.
-
----
 
 ## 7. Abandon separate CV/JD parsing in the deployed match path
 
@@ -103,8 +91,6 @@ raw CV text + raw JD text → structured match result
 
 This was one of the most important architecture changes in the project.
 
----
-
 ## 8. Separate semantic reasoning from arithmetic
 
 **Decision:** Let the LLM decide whether CV evidence supports a requirement, but compute the final percentage in normal Python code.
@@ -113,11 +99,9 @@ This was one of the most important architecture changes in the project.
 
 **Result:** The system keeps probabilistic work where it is needed and deterministic work where it is possible.
 
----
-
 ## 9. Use OpenRouter as a model gateway
 
-**Decision:** Use an OpenAI-compatible client with OpenRouter as the base endpoint.
+**Decision:** Use an OpenAI-compatible client with `OpenRouter` as the base endpoint.
 
 **Why:**
 
@@ -127,9 +111,7 @@ This was one of the most important architecture changes in the project.
 - centralized usage/cost information;
 - provider filtering for required features.
 
-**Design consideration:** Keep provider-specific concerns behind the application's LLM-client abstraction so the rest of the system is not unnecessarily coupled to OpenRouter.
-
----
+**Design consideration:** Keep provider-specific concerns behind the application's LLM-client abstraction so the rest of the system is not unnecessarily coupled to `OpenRouter`.
 
 ## 10. Require zero-data-retention routing
 
@@ -139,21 +121,17 @@ This was one of the most important architecture changes in the project.
 
 This is one part of the privacy design; it does not remove the need to reason separately about frontend state, logs, error data, and any future persistent storage.
 
----
-
 ## 11. Cache CV extraction in the user session
 
 **Observation:** A user is likely to upload one CV and compare it against several job postings.
 
-**Decision:** Hash the PDF bytes and cache extracted CV text in Streamlit session state.
+**Decision:** Hash the PDF bytes and cache extracted CV text in `Streamlit` session state.
 
 **Why:** Avoid repeated PDF parsing without introducing persistent candidate storage.
 
----
-
 ## 12. Centralize unexpected API errors
 
-**Decision:** Use FastAPI-level error handling for unexpected exceptions while handling known external failures explicitly.
+**Decision:** Use `FastAPI`-level error handling for unexpected exceptions while handling known external failures explicitly.
 
 **Why:**
 
@@ -161,20 +139,3 @@ This is one part of the privacy design; it does not remove the need to reason se
 - unexpected failures become consistently observable;
 - users receive safe, predictable responses;
 - known failures such as an inaccessible job URL can receive specific guidance instead of a generic 500.
-
----
-
-## 13. Optimize for a portfolio that demonstrates engineering judgment
-
-The goal is not to maximize the number of AI techniques used.
-
-The project deliberately avoids adding RAG, agents, fine-tuning, vector databases, or other components unless the problem provides evidence that they are useful.
-
-The portfolio value comes from being able to explain:
-
-- what uncertainty each experiment addressed;
-- why an architecture was changed;
-- what was measured;
-- what failed;
-- which responsibilities belong to the model versus deterministic software;
-- how the system behaves when external dependencies fail.

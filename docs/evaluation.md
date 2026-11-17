@@ -24,11 +24,11 @@ The initial evaluation plan considered scoring only the final match result, but 
 
 ### Test data
 
-A small synthetic benchmark was created for both CVs and JDs at three difficulty levels:
+A small synthetic benchmark was created for both CVs and job descriptions (JDs) at three difficulty levels:
 
-- **easy** — explicit sections and straightforward extraction;
-- **medium** — information distributed between sections and prose;
-- **hard** — denser layouts or more ambiguous natural-language requirements.
+- **easy**: explicit sections and straightforward extraction;
+- **medium**: information distributed between sections and prose;
+- **hard**: denser layouts or more ambiguous natural-language requirements.
 
 The harder JDs also included realistic ways of expressing optionality, such as “preferred”, “nice to have”, and “is a plus”.
 
@@ -45,7 +45,7 @@ The automated judgment was then manually reviewed against the original CV/JD and
 
 ## Model filtering
 
-The first candidate pool contained roughly 25 models selected from OpenRouter using constraints relevant to the application, including:
+The first candidate pool contained roughly 25 models selected from `OpenRouter` using constraints relevant to the application, including:
 
 - text input;
 - acceptable input/output pricing;
@@ -53,7 +53,7 @@ The first candidate pool contained roughly 25 models selected from OpenRouter us
 - structured-output support;
 - zero-data-retention availability.
 
-Benchmark results were recorded in Supabase.
+Benchmark results were recorded in `Supabase`.
 
 The main comparison dimensions were:
 
@@ -112,7 +112,7 @@ The strongest output quality across the test inputs was:
 - prompt: `jd_03_persona_fewshot.txt`
 - schema: `01_jd_parsing.json`
 
-This showed that model and prompt choice should be treated as task-specific.
+This showed that model and prompt choice should be treated as task-specific, even if the tasks seem to be virtually identical.
 
 The JD task benefited more from few-shot behavior because job descriptions often express requirement importance indirectly (“preferred”, “plus”, “nice to have”, etc.), while CV extraction was generally less ambiguous.
 
@@ -141,7 +141,7 @@ The revised approach provides the extracted raw text from both documents directl
 
 For the first match experiment:
 
-- `openai/gpt-4.1-nano` was fixed as the model;
+- `openai/gpt-4.1-nano` was fixed as the model (since it ranked 1st in CV parsing and 2nd and JD parsing);
 - one difficult CV and one real job description were used;
 - a human-generated expected output served as the comparison target;
 - prompt versions were iteratively refined based on observed failures.
@@ -162,16 +162,14 @@ The benchmark changed the architecture:
 
 > Preserve full CV/JD context for the semantic comparison, constrain the LLM output, then use deterministic application code for arithmetic and presentation.
 
-This reduced the number of LLM calls and removed a layer of error propagation while keeping the output machine-readable.
+This reduced the number of LLM calls and removed a layer of error propagation.
 
 ## Evaluation work still to do
 
 The current benchmark is useful but intentionally small. Before treating the model choice as broadly robust, the next evaluation round should include:
 
-- more CV formats and seniority levels;
+- more CV formats;
 - more industries and JD styles;
-- more job sites;
 - more candidate–vacancy match levels;
 - repeated runs where stochastic variation matters;
 - explicit error categories for requirement extraction and requirement matching;
-- end-to-end comparison across multiple model candidates.
